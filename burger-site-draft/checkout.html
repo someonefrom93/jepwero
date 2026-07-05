@@ -178,6 +178,25 @@
       var supabase = null;
       var submitting = false;
 
+      /* --- readCart: handles both legacy array shape and versioned object shape ---
+         Legacy: [{ id, qty, name, priceCents }, ...]
+         Versioned (menu.html cart module): { v: 1, lines: { id: { qty, name, priceCents } } }
+         Returns an array of { id, qty, name, priceCents } or null if empty/invalid. */
+      function readCart() {
+        var raw = null;
+        try { raw = localStorage.getItem(CART_KEY); } catch (ex) { return null; }
+        if (!raw) return null;
+        var parsed = null;
+        try { parsed = JSON.parse(raw); } catch (ex) { return null; }
+        if (Array.isArray(parsed)) return parsed.length ? parsed : null;
+        if (parsed && parsed.lines && typeof parsed.lines === 'object') {
+          var ids = Object.keys(parsed.lines);
+          if (!ids.length) return null;
+          return ids.map(function (id) { return Object.assign({ id: id }, parsed.lines[id]); });
+        }
+        return null;
+      }
+
       /* --- formatPrice (DUPLICATED from menu.html) --- */
       var _fmt = (typeof Intl !== 'undefined' && Intl.NumberFormat)
         ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }) : null;
@@ -330,11 +349,8 @@
 
       /* --- Submit + Supabase insert --- */
       function submitOrder(formData) {
-        var raw = localStorage.getItem(CART_KEY);
-        if (!raw) { redirectToMenu(); return; }
-        var cart = null;
-        try { cart = JSON.parse(raw); } catch (ex) { cart = null; }
-        if (!cart || !Array.isArray(cart) || cart.length === 0) { redirectToMenu(); return; }
+        var cart = readCart();
+        if (!cart) { redirectToMenu(); return; }
 
         var itemsPayload = cart.map(function (l) {
           var qty = Number(l.qty) || 1, price = Number(l.priceCents) || 0;
@@ -393,16 +409,13 @@
 
       /* --- Cart summary rendering --- */
       function renderCartSummary() {
-        var raw = null;
-        try { raw = localStorage.getItem(CART_KEY); } catch (ex) {}
-        var cart = null;
-        try { cart = raw ? JSON.parse(raw) : null; } catch (ex) { cart = null; }
+        var cart = readCart();
         var linesEl = document.querySelector('[data-checkout-summary-lines]');
         var subtotalEl = document.querySelector('[data-checkout-subtotal]');
         var summaryEl = document.querySelector('[data-checkout-summary]');
         var emptyEl = document.querySelector('[data-checkout-empty]');
         var formEl = document.querySelector('[data-checkout-form]');
-        if (!cart || !Array.isArray(cart) || cart.length === 0) {
+        if (!cart) {
           if (linesEl) linesEl.innerHTML = '';
           if (subtotalEl) subtotalEl.textContent = '$0.00';
           if (summaryEl) summaryEl.hidden = true;
@@ -430,11 +443,8 @@
 
       /* --- Init --- */
       function initCheckout() {
-        var raw = null;
-        try { raw = localStorage.getItem(CART_KEY); } catch (ex) {}
-        var cart = null;
-        try { cart = raw ? JSON.parse(raw) : null; } catch (ex) { cart = null; }
-        if (!cart || !Array.isArray(cart) || cart.length === 0) { redirectToMenu(); return; }
+        var cart = readCart();
+        if (!cart) { redirectToMenu(); return; }
 
         if (!window.supabase && window.__bpSupabase) {
           window.supabase = window.supabase.createClient(window.__bpSupabase.url, window.__bpSupabase.publishableKey,

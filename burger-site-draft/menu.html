@@ -1975,7 +1975,13 @@
 
         function persist() {
           updatedAt = Date.now();
-          storage.write({ v: 1, lines: lines, updatedAt: updatedAt });
+          // Include catalog fields so checkout.html can render without re-loading the catalog
+          var stored = {};
+          Object.keys(lines).forEach(function (id) {
+            var item = catalog.get(id);
+            if (item) stored[id] = { qty: lines[id].qty, name: item.name, priceCents: item.priceCents };
+          });
+          storage.write({ v: 1, lines: stored, updatedAt: updatedAt });
           notify();
         }
 
