@@ -139,17 +139,22 @@
     (function () {
       'use strict';
 
-      /* --- Idempotency token (per page-load) --- */
-      window.__bpIdempotencyToken = (
-        typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+      // crypto.randomUUID is universally available since 2022; no Math.random fallback (slice bug produced malformed UUIDs).
+      var SUBMIT_TOKEN_KEY = 'bp-submit-token';
+      var SUBMIT_TOKEN_CUTOFF_MS = 24 * 60 * 60 * 1000;
+
+      function ensureSubmitToken() {
+        var existing = null;
+        try { existing = sessionStorage.getItem(SUBMIT_TOKEN_KEY); } catch (ex) {}
+        if (existing) { window.__bpIdempotencyToken = existing; return; }
+        var fresh = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
           ? crypto.randomUUID()
-          : (function () {
-              var a = Array.from({ length: 16 }, function () { return Math.floor(Math.random() * 256); });
-              a[6] = (a[6] & 0x0f) | 0x40; a[8] = (a[8] & 0x3f) | 0x80;
-              var hex = Array.from(a).map(function (b) { return b.toString(16).padStart(2, '0'); });
-              return hex.slice(0,4) + '-' + hex.slice(4,8) + '-' + hex.slice(8,12) + '-' + hex.slice(12,16) + '-' + hex.slice(16,32);
-            })()
-      );
+          : null;
+        if (!fresh) throw new Error('crypto.randomUUID unavailable; checkout cannot run safely');
+        try { sessionStorage.setItem(SUBMIT_TOKEN_KEY, fresh); } catch (ex) {}
+        window.__bpIdempotencyToken = fresh;
+      }
+      ensureSubmitToken();
 
       var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       var PHONE_RE = /^[+0-9\s\-()]{6,}$/;
@@ -295,13 +300,15 @@
         });
         var subtotal = itemsPayload.reduce(function (s, i) { return s + i.line_total_cents; }, 0);
 
-        // NOTE: Do NOT add submit_token here — the column does not exist.
-        // Client-side idempotency: window.__bpIdempotencyToken + submitting flag.
         var orderPayload = {
-          customer_name: formData.customer_name, customer_email: formData.customer_email,
-          customer_phone: formData.customer_phone, fulfillment: formData.fulfillment,
+          customer_name: formData.customer_name,
+          customer_email: formData.customer_email,
+          customer_phone: formData.customer_phone,
+          fulfillment: formData.fulfillment,
           pickup_time: formData.fulfillment === 'pickup' ? formData.pickup_time : null,
-          subtotal_cents: subtotal, total_cents: subtotal
+          subtotal_cents: subtotal,
+          total_cents: subtotal,
+          submit_token: window.__bpIdempotencyToken
         };
 
         supabase.from('orders').insert(orderPayload).select().single()
