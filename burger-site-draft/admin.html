@@ -329,6 +329,327 @@
     .admin-role-mismatch__signout:hover {
       background: var(--color-primary-dark);
     }
+
+    /* ---------- Slice 4: Orders list ---------- */
+    .admin-shell__orders {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .admin-order {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--color-line);
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      margin-bottom: 8px;
+    }
+    .admin-order:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .admin-order.is-selected {
+      border-color: var(--color-primary);
+      background: var(--color-bg-soft);
+    }
+    .admin-order__id {
+      font-size: 12px;
+      color: var(--color-muted);
+      font-family: monospace;
+    }
+    .admin-order__customer {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-ink);
+    }
+    .admin-order__meta {
+      font-size: 12px;
+      color: var(--color-ink-soft);
+    }
+    .admin-order__total {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--color-ink);
+    }
+    .admin-order__status {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .admin-order__status--received   { background: #dbeafe; color: #1d4ed8; }
+    .admin-order__status--preparing  { background: #fef9c3; color: #854d0e; }
+    .admin-order__status--ready      { background: #d1fae5; color: #065f46; }
+    .admin-order__status--completed  { background: #e5e7eb; color: #374151; }
+    .admin-order__status--cancelled  { background: #fee2e2; color: #991b1b; }
+
+    /* ---------- Slice 4: Detail panel ---------- */
+    .admin-shell__detail {
+      width: 380px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--color-line);
+      padding: 24px;
+      background: var(--color-bg);
+      overflow-y: auto;
+    }
+    .admin-shell__detail__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .admin-shell__detail__close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-line);
+      background: transparent;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-ink-soft);
+      flex-shrink: 0;
+    }
+    .admin-shell__detail__close:hover {
+      background: var(--color-bg-soft);
+    }
+    .admin-shell__detail.is-closed {
+      display: none;
+    }
+    .admin-shell__detail__customer {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-line);
+    }
+    .admin-shell__detail__customer-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      margin: 0 0 4px;
+    }
+    .admin-shell__detail__customer-meta {
+      font-size: 13px;
+      color: var(--color-ink-soft);
+      line-height: 1.8;
+    }
+    .admin-shell__detail__fulfillment {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--color-bg-soft);
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .admin-shell__detail__items {
+      margin-bottom: 16px;
+    }
+    .admin-shell__detail__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--color-line);
+      font-size: 14px;
+    }
+    .admin-shell__detail__item:last-child {
+      border-bottom: none;
+    }
+    .admin-shell__detail__item-name {
+      color: var(--color-ink);
+    }
+    .admin-shell__detail__item-qty {
+      color: var(--color-muted);
+      font-size: 12px;
+      margin-left: 8px;
+    }
+    .admin-shell__detail__item-total {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .admin-shell__detail__total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-top: 2px solid var(--color-ink);
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .admin-shell__detail__controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .admin-shell__detail__action-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--color-line);
+      background: var(--color-bg);
+      color: var(--color-ink);
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .admin-shell__detail__action-btn:hover {
+      background: var(--color-bg-soft);
+    }
+    .admin-shell__detail__action-btn--primary {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+    .admin-shell__detail__action-btn--primary:hover {
+      background: var(--color-primary-dark);
+    }
+    .admin-shell__detail__action-btn[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .admin-shell__detail__print-btn {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--color-line);
+      background: var(--color-bg-soft);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--color-ink-soft);
+      margin-top: 12px;
+      transition: background 0.15s;
+    }
+    .admin-shell__detail__print-btn:hover {
+      background: var(--color-line);
+    }
+
+    /* ---------- Slice 4: Filters aside ---------- */
+    .admin-shell__filter-group {
+      margin-bottom: 20px;
+    }
+    .admin-shell__filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 8px;
+    }
+    .admin-shell__filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .admin-filter-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1.5px solid var(--color-line);
+      background: var(--color-bg);
+      color: var(--color-ink-soft);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .admin-filter-pill:hover {
+      border-color: var(--color-primary);
+      color: var(--color-ink);
+    }
+    .admin-filter-pill.is-active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+    }
+    .admin-filter-pill[data-filter-status="all"].is-active {
+      background: var(--color-ink);
+      border-color: var(--color-ink);
+    }
+
+    /* ---------- Slice 4: Realtime indicator ---------- */
+    .admin-shell__realtime-indicator {
+      font-size: 11px;
+      color: var(--color-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .admin-shell__realtime-indicator::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+
+    /* ---------- Slice 4: Toast ---------- */
+    .admin-toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1a;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      z-index: 999;
+      box-shadow: var(--shadow-md);
+      pointer-events: none;
+      animation: toast-in 0.2s ease;
+    }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ---------- Slice 4: Print ---------- */
+    @media print {
+      .admin-shell__topbar,
+      .admin-shell__aside,
+      .admin-shell__orders,
+      .admin-shell__realtime-indicator,
+      [data-admin-empty],
+      [data-admin-signout-from-mismatch],
+      .admin-shell__detail__controls,
+      .admin-shell__detail__close,
+      .admin-shell__detail__print-btn {
+        display: none !important;
+      }
+      .admin-shell__detail {
+        display: block !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        width: 100% !important;
+        border: none !important;
+        padding: 0 !important;
+      }
+      .admin-shell__detail.is-closed {
+        display: block !important;
+      }
+      body {
+        background: #fff !important;
+      }
+    }
   </style>
 
   <!-- 1. Credentials (gitignored; hand-filled from .env) -->
@@ -370,6 +691,7 @@
           <span class="admin-shell__brand">Burger.Place</span>
           <span class="admin-shell__topbar-user" data-admin-topbar-user></span>
           <button type="button" class="admin-shell__signout" data-admin-logout>Sign out</button>
+        <span class="admin-shell__realtime-indicator" data-realtime-indicator hidden>Realtime offline — polling every 5s</span>
         </div>
       </header>
       <div class="admin-shell__main">
@@ -379,8 +701,13 @@
         <section class="admin-shell__orders" data-admin-orders-host>
           <p data-admin-empty>Loading…</p>
         </section>
-        <section class="admin-shell__detail" data-admin-detail hidden>
-          <p data-admin-detail-empty hidden></p>
+        <section class="admin-shell__detail is-closed" data-admin-detail hidden>
+          <div class="admin-shell__detail__header">
+            <strong>Order detail</strong>
+            <button type="button" class="admin-shell__detail__close" data-admin-detail-close title="Close">&#x2715;</button>
+          </div>
+          <p data-admin-detail-empty hidden>Select an order to see its details.</p>
+          <div class="admin-shell__detail__body" data-admin-detail-body></div>
         </section>
       </div>
     </section>
@@ -574,7 +901,431 @@
   </script>
 
   <!-- ===========================================================================
-       Slice 3 — Manual verification checklist
+       Slice 4: bpAdminOrders — live orders feed, realtime, status, filters
+       =========================================================================== -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- State ---------- */
+    var allOrders      = [];
+    var filter         = { archived: false, status: null };
+    var currentDetailId = null;
+
+    /* ---------- DOM refs ---------- */
+    var ordersHost      = document.querySelector('[data-admin-orders-host]');
+    var emptyEl         = document.querySelector('[data-admin-empty]');
+    var detailEl        = document.querySelector('[data-admin-detail]');
+    var detailBody      = document.querySelector('[data-admin-detail-body]');
+    var detailEmptyEl   = document.querySelector('[data-admin-detail-empty]');
+    var detailCloseBtn  = document.querySelector('[data-admin-detail-close]');
+    var rtIndicator     = document.querySelector('[data-realtime-indicator]');
+    var asideEl         = document.querySelector('[data-admin-aside-skeleton]');
+
+    /* ---------- Helpers ---------- */
+    var _priceFmt = null;
+    function formatPrice(cents) {
+      if (!_priceFmt) _priceFmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+      return _priceFmt.format(cents / 100);
+    }
+
+    function formatAge(timestamp) {
+      var diff = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
+      if (diff < 60)  return diff + 's ago';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      return Math.floor(diff / 86400) + 'd ago';
+    }
+
+    function shortId(uuid) {
+      return (uuid || '').slice(0, 8);
+    }
+
+    /* ---------- URL hash ---------- */
+    function applyHash() {
+      var hash = window.location.hash.slice(1);
+      if (!hash) {
+        filter.archived = false;
+        filter.status   = null;
+        return;
+      }
+      var parts = hash.split('&');
+      filter.archived = parts.indexOf('archived') !== -1;
+      var statusPart = parts.find(function (p) { return p.indexOf('status=') === 0; });
+      filter.status = statusPart ? statusPart.split('=')[1] : null;
+    }
+
+    function writeHash() {
+      var parts = filter.archived ? ['archived'] : ['active'];
+      if (filter.status) parts.push('status=' + filter.status);
+      history.replaceState(null, '', '#' + parts.join('&'));
+    }
+
+    /* ---------- Filters ---------- */
+    function applyFilters(orders) {
+      var result = orders.filter(function (o) {
+        if (!filter.archived) {
+          if (o.archived_at !== null) return false;
+        } else {
+          if (o.archived_at === null) return false;
+        }
+        if (filter.status && o.status !== filter.status) return false;
+        return true;
+      });
+      return result;
+    }
+
+    function renderFilters() {
+      /* Rebuild aside filter rail */
+      asideEl.innerHTML =
+        '<div class="admin-shell__filter-group">' +
+          '<p class="admin-shell__filter-label">View</p>' +
+          '<div class="admin-shell__filter-pills">' +
+            '<button class="admin-filter-pill' + (filter.archived === false ? ' is-active' : '') + '" data-filter-archived="false">Active</button>' +
+            '<button class="admin-filter-pill' + (filter.archived === true  ? ' is-active' : '') + '" data-filter-archived="true">Archived</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="admin-shell__filter-group">' +
+          '<p class="admin-shell__filter-label">Status</p>' +
+          '<div class="admin-shell__filter-pills">' +
+            '<button class="admin-filter-pill' + (filter.status === null ? ' is-active' : '') + '" data-filter-status="all">All</button>' +
+            '<button class="admin-filter-pill' + (filter.status === 'received'  ? ' is-active' : '') + '" data-filter-status="received">Received</button>' +
+            '<button class="admin-filter-pill' + (filter.status === 'preparing' ? ' is-active' : '') + '" data-filter-status="preparing">Preparing</button>' +
+            '<button class="admin-filter-pill' + (filter.status === 'ready'     ? ' is-active' : '') + '" data-filter-status="ready">Ready</button>' +
+            '<button class="admin-filter-pill' + (filter.status === 'completed' ? ' is-active' : '') + '" data-filter-status="completed">Completed</button>' +
+            '<button class="admin-filter-pill' + (filter.status === 'cancelled' ? ' is-active' : '') + '" data-filter-status="cancelled">Cancelled</button>' +
+          '</div>' +
+        '</div>';
+    }
+
+    /* ---------- List rendering ---------- */
+    function renderEmpty() {
+      ordersHost.innerHTML = '';
+      emptyEl.textContent  = 'No orders here.';
+      emptyEl.removeAttribute('hidden');
+      closeDetail();
+    }
+
+    function renderList() {
+      var filtered = applyFilters(allOrders);
+      if (filtered.length === 0) {
+        renderEmpty();
+        return;
+      }
+      emptyEl.setAttribute('hidden', '');
+      var html = '';
+      filtered.forEach(function (order) {
+        var itemsCount = (order.order_items && order.order_items.length)
+          ? order.order_items.length + ' item' + (order.order_items.length !== 1 ? 's' : '')
+          : '0 items';
+        html +=
+          '<article class="admin-order' + (order.id === currentDetailId ? ' is-selected' : '') + '" data-order-id="' + order.id + '">' +
+            '<span class="admin-order__id">#' + shortId(order.id) + '</span>' +
+            '<span class="admin-order__customer">' + escHtml(order.customer_name || '—') + '</span>' +
+            '<span class="admin-order__meta">' + itemsCount + '</span>' +
+            '<span class="admin-order__total">' + formatPrice(order.total_cents || 0) + '</span>' +
+            '<span class="admin-order__status admin-order__status--' + order.status + '">' + order.status + '</span>' +
+          '</article>';
+      });
+      ordersHost.innerHTML = html;
+    }
+
+    function escHtml(str) {
+      var d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    /* ---------- Detail rendering ---------- */
+    function renderDetail(orderId) {
+      var order = allOrders.find(function (o) { return o.id === orderId; });
+      if (!order) {
+        closeDetail();
+        return;
+      }
+      currentDetailId = orderId;
+      detailEmptyEl.setAttribute('hidden', '');
+      detailEl.removeAttribute('hidden');
+      detailEl.classList.remove('is-closed');
+
+      var items = order.order_items || [];
+      var itemsHtml = '';
+      items.forEach(function (item) {
+        itemsHtml +=
+          '<div class="admin-shell__detail__item">' +
+            '<span class="admin-shell__detail__item-name">' +
+              escHtml(item.name || '—') +
+              '<span class="admin-shell__detail__item-qty">&#xD7;' + item.qty + '</span>' +
+            '</span>' +
+            '<span class="admin-shell__detail__item-total">' + formatPrice(item.unit_price_cents * item.qty) + '</span>' +
+          '</div>';
+      });
+
+      var fulfillmentLabel = order.fulfillment === 'pickup' ? '&#x1F4CB; Pickup' : '&#x1F69A; Delivery';
+      var pickupTimeStr = order.pickup_time
+        ? new Date(order.pickup_time).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+        : '';
+
+      var controlsHtml = renderStatusControls(order);
+
+      detailBody.innerHTML =
+        '<div class="admin-shell__detail__customer">' +
+          '<p class="admin-shell__detail__customer-name">' + escHtml(order.customer_name || '—') + '</p>' +
+          '<p class="admin-shell__detail__customer-meta">' +
+            escHtml(order.customer_email || '') + '<br/>' +
+            escHtml(order.customer_phone || '') +
+          '</p>' +
+          '<span class="admin-shell__detail__fulfillment">' + fulfillmentLabel + '</span>' +
+          (pickupTimeStr ? '<br/><span class="admin-shell__detail__customer-meta">Pickup: ' + pickupTimeStr + '</span>' : '') +
+        '</div>' +
+        '<div class="admin-shell__detail__items">' + itemsHtml + '</div>' +
+        '<div class="admin-shell__detail__total-row">' +
+          '<span>Total</span><span>' + formatPrice(order.total_cents || 0) + '</span>' +
+        '</div>' +
+        '<div class="admin-shell__detail__controls">' + controlsHtml + '</div>' +
+        '<button type="button" class="admin-shell__detail__print-btn" data-admin-print>Print</button>';
+
+      renderList(); /* re-render to update selection highlight */
+    }
+
+    function renderStatusControls(order) {
+      var terminal = (order.status === 'completed' || order.status === 'cancelled');
+      if (terminal) return '';
+
+      var nextBtn = '';
+      var cancelBtn = '';
+
+      if (order.status === 'received') {
+        nextBtn = '<button type="button" class="admin-shell__detail__action-btn admin-shell__detail__action-btn--primary" data-status-action="preparing" data-order-id="' + order.id + '">Start preparing</button>';
+      } else if (order.status === 'preparing') {
+        nextBtn = '<button type="button" class="admin-shell__detail__action-btn admin-shell__detail__action-btn--primary" data-status-action="ready" data-order-id="' + order.id + '">Mark ready</button>';
+      } else if (order.status === 'ready') {
+        nextBtn = '<button type="button" class="admin-shell__detail__action-btn admin-shell__detail__action-btn--primary" data-status-action="completed" data-order-id="' + order.id + '">Complete</button>';
+      }
+
+      cancelBtn = '<button type="button" class="admin-shell__detail__action-btn" data-cancel data-order-id="' + order.id + '">Cancel</button>';
+
+      return nextBtn + cancelBtn;
+    }
+
+    function closeDetail() {
+      currentDetailId = null;
+      detailEl.setAttribute('hidden', '');
+      detailEl.classList.add('is-closed');
+      detailEmptyEl.removeAttribute('hidden');
+      detailEmptyEl.textContent = 'Select an order to see its details.';
+    }
+
+    /* ---------- Fetch ---------- */
+    function openDetail(orderId) {
+      renderDetail(orderId);
+    }
+
+    async function fetchOrders() {
+      var _ref = await window.supabase
+        .from('orders')
+        .select('*, order_items(*)')
+        .order('created_at', { ascending: false });
+      if (_ref.error) {
+        emptyEl.textContent = 'Couldn\'t load orders.';
+        return;
+      }
+      allOrders = _ref.data || [];
+      renderList();
+    }
+
+    /* ---------- Status action ---------- */
+    async function handleStatusAction(orderId, newStatus, evt) {
+      if (evt) evt.target.disabled = true;
+      var idx     = allOrders.findIndex(function (o) { return o.id === orderId; });
+      if (idx === -1) return;
+      var snapshot = JSON.parse(JSON.stringify(allOrders[idx]));
+
+      /* Optimistic update */
+      allOrders[idx].status = newStatus;
+      if (newStatus === 'completed') {
+        allOrders[idx].archived_at = new Date().toISOString();
+      }
+      renderList();
+      renderDetail(orderId);
+
+      var updateObj = { status: newStatus };
+      if (newStatus === 'completed') updateObj.archived_at = new Date().toISOString();
+
+      var _result = await window.supabase
+        .from('orders')
+        .update(updateObj)
+        .eq('id', orderId)
+        .select()
+        .single();
+
+      if (_result.error) {
+        /* Rollback */
+        allOrders[idx] = snapshot;
+        renderList();
+        renderDetail(orderId);
+        showErrorToast('Couldn\'t update status');
+      } else {
+        allOrders[idx] = _result.data;
+        renderList();
+        if (currentDetailId === orderId) renderDetail(orderId);
+      }
+    }
+
+    function showErrorToast(text) {
+      var el = document.createElement('div');
+      el.className = 'admin-toast';
+      el.textContent = text;
+      document.body.appendChild(el);
+      setTimeout(function () { el.remove(); }, 4000);
+    }
+
+    /* ---------- Realtime + polling ---------- */
+    var realtimeChannel = null;
+    var pollingTimer    = null;
+
+    function startRealtime() {
+      realtimeChannel = window.supabase.channel('admin-orders');
+      realtimeChannel.on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, function () {
+        fetchOrders();
+      });
+      realtimeChannel.subscribe(function (status) {
+        handleChannelStatus(status);
+      });
+    }
+
+    function handleChannelStatus(status) {
+      if (status === 'SUBSCRIBED') {
+        if (pollingTimer) { clearInterval(pollingTimer); pollingTimer = null; }
+        if (rtIndicator) rtIndicator.setAttribute('hidden', '');
+      } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
+        if (!pollingTimer) pollingTimer = setInterval(fetchOrders, 5000);
+        if (rtIndicator) rtIndicator.removeAttribute('hidden');
+      }
+    }
+
+    function stopRealtime() {
+      if (realtimeChannel) { realtimeChannel.unsubscribe(); realtimeChannel = null; }
+      if (pollingTimer)    { clearInterval(pollingTimer); pollingTimer = null; }
+    }
+
+    /* ---------- Event bindings ---------- */
+    ordersHost.addEventListener('click', function (e) {
+      var row = e.target.closest('[data-order-id]');
+      if (row) openDetail(row.getAttribute('data-order-id'));
+    });
+
+    detailEl.addEventListener('click', function (e) {
+      /* Close button */
+      if (e.target === detailCloseBtn || e.target.getAttribute('data-admin-detail-close') !== null) {
+        closeDetail();
+        renderList();
+        return;
+      }
+      /* Status action */
+      var actionTarget = e.target.closest('[data-status-action]');
+      if (actionTarget) {
+        var orderId   = actionTarget.getAttribute('data-order-id');
+        var newStatus = actionTarget.getAttribute('data-status-action');
+        if (newStatus === 'completed' && !window.confirm('Complete this order?')) return;
+        handleStatusAction(orderId, newStatus, e);
+        return;
+      }
+      /* Cancel */
+      var cancelTarget = e.target.closest('[data-cancel]');
+      if (cancelTarget) {
+        var cancelId = cancelTarget.getAttribute('data-order-id');
+        if (!window.confirm('Cancel this order?')) return;
+        handleStatusAction(cancelId, 'cancelled', e);
+        return;
+      }
+      /* Print */
+      if (e.target.getAttribute('data-admin-print') !== null) {
+        window.print();
+      }
+    });
+
+    asideEl.addEventListener('click', function (e) {
+      var pill = e.target.closest('.admin-filter-pill');
+      if (!pill) return;
+      if (pill.hasAttribute('data-filter-archived')) {
+        filter.archived = pill.getAttribute('data-filter-archived') === 'true';
+      }
+      if (pill.hasAttribute('data-filter-status')) {
+        var s = pill.getAttribute('data-filter-status');
+        filter.status = s === 'all' ? null : s;
+      }
+      writeHash();
+      renderFilters();
+      renderList();
+    });
+
+    window.addEventListener('beforeunload', stopRealtime);
+
+    /* ---------- Init ---------- */
+    window.addEventListener('bp-admin-ready', function () {
+      applyHash();
+      renderFilters();
+      fetchOrders();
+      startRealtime();
+    });
+
+  })();
+  </script>
+
+  <!-- ===========================================================================
+       Slice 4 — Manual verification checklist
+       ===========================================================================
+       Prerequisites:
+         • Slice 1 SQL migrations applied (orders, order_items, RLS).
+         • Slice 3 auth verified: admin account can sign in and see the shell.
+         • supabase-config.js filled with current keys.
+         • Two browser tabs open: tab A = menu.html, tab B = admin.html (admin session).
+
+       Steps (run in Chrome DevTools unless noted):
+       ---------------------------------------------------------------------------
+       1. Tab A: add an item to cart → checkout → fill form → submit.
+          Tab B: new order appears in the list within ~1 second via Realtime,
+          OR within 5 seconds if Realtime is disabled at the project level.
+
+       2. With Realtime disabled in Supabase Dashboard → Settings → Realtime →
+          Toggle "Tables: orders" off: polling fallback engages, indicator
+          "Realtime offline — polling every 5s" appears below the user email in
+          the topbar. Orders still refresh every 5s.
+
+       3. Re-enable Realtime: green dot returns, polling indicator disappears
+          within 5s.
+
+       4. Click an order row → detail panel opens (close button, customer info,
+          itemized list, total, status controls, Print button all visible).
+
+       5. Click "Start preparing" on a `received` order: badge changes to
+          "preparing" immediately (optimistic). Simulate a PATCH failure by
+          temporarily revoking the admin-UPDATE policy in Supabase Studio →
+          SQL Editor: DROP POLICY "admin_can_update_orders" ON public.orders;
+          Then click "Start preparing". After the toast error, verify the
+          badge reverted to the previous state (rollback confirmed).
+
+       6. Restore the policy, then advance: received → preparing → ready →
+          Complete. After "Complete", verify archived_at is set (check in
+          Supabase Studio → orders table).
+
+       7. Switch to "Archived" view: only completed/cancelled rows visible;
+          URL hash becomes #archived.
+
+       8. Switch to "Active": only archived_at=null rows visible; URL hash
+          becomes #active.
+
+       9. Hard refresh (F5 or Ctrl+Shift+R): filters are restored from URL hash
+          (test with #archived or #status=preparing in the URL).
+
+      10. With an order expanded, click "Print": browser print dialog opens;
+          print preview shows only the detail panel (topbar, aside, order list,
+          controls hidden), formatted as a portrait receipt.
+
+      11. `grep -E "sb_secret_|sb_publishable_[A-Za-z0-9_-]+|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+" burger-site-draft/admin.html`
+          must return exit code 1 (zero credential matches).
+       =========================================================================== -->
        ===========================================================================
        Prerequisites:
          • A chef account exists in Supabase Authentication.
