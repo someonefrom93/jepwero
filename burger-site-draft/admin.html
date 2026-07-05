@@ -120,6 +120,215 @@
       flex: 1;
       padding: 24px;
     }
+
+    /* ---------- Slice 3: Login form ---------- */
+    .admin-login {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 64px);
+      padding: 32px 16px;
+    }
+    .admin-login__card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--color-bg);
+      border: 1.5px solid var(--color-line);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+    }
+    .admin-login__card h1 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--color-ink);
+    }
+    .admin-login__card > p {
+      margin: 0 0 24px;
+      color: var(--color-ink-soft);
+      font-size: 14px;
+    }
+    .admin-login__card label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--color-ink);
+    }
+    .admin-login__card input[type="email"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--color-line);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--color-ink);
+      background: var(--color-bg);
+      outline: none;
+      transition: border-color 0.15s;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+    }
+    .admin-login__card input[type="email"]:focus {
+      border-color: var(--color-primary);
+    }
+    .admin-login__card button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .admin-login__card button[type="submit"]:hover {
+      background: var(--color-primary-dark);
+    }
+    .admin-login__status {
+      margin-top: 16px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      text-align: center;
+      background: var(--color-bg-soft);
+      color: var(--color-ink-soft);
+      border: 1px solid var(--color-line);
+    }
+
+    /* ---------- Slice 3: Admin shell ---------- */
+    .admin-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-shell__brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+      text-decoration: none;
+    }
+    .admin-shell__topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 64px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-line);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+    }
+    .admin-shell__topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .admin-shell__topbar-user {
+      font-size: 13px;
+      color: var(--color-ink-soft);
+      flex: 1;
+      text-align: center;
+    }
+    .admin-shell__signout {
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 13px;
+      background: var(--color-bg-soft);
+      border: 1.5px solid var(--color-line);
+      cursor: pointer;
+      color: var(--color-ink);
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .admin-shell__signout:hover {
+      background: var(--color-line);
+    }
+    .admin-shell__main {
+      flex: 1;
+      display: flex;
+      gap: 0;
+      overflow: hidden;
+    }
+    .admin-shell__aside {
+      width: 220px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--color-line);
+      padding: 16px;
+      background: var(--color-bg-soft);
+    }
+    .admin-shell__orders {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    .admin-shell__detail {
+      width: 380px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--color-line);
+      padding: 24px;
+      background: var(--color-bg);
+    }
+
+    /* ---------- Slice 3: Role mismatch ---------- */
+    .admin-role-mismatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 64px);
+      padding: 32px 16px;
+    }
+    .admin-role-mismatch__card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--color-bg);
+      border: 1.5px solid var(--color-line);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .admin-role-mismatch__card h1 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--color-ink);
+    }
+    .admin-role-mismatch__card > p {
+      margin: 0 0 24px;
+      color: var(--color-ink-soft);
+      font-size: 14px;
+    }
+    .admin-role-mismatch__signout {
+      padding: 12px 24px;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .admin-role-mismatch__signout:hover {
+      background: var(--color-primary-dark);
+    }
   </style>
 
   <!-- 1. Credentials (gitignored; hand-filled from .env) -->
@@ -130,26 +339,64 @@
 </head>
 <body>
 
-  <!-- Admin shell (slice 1 placeholder). Auth + orders land in slices 3 and 4. -->
-  <header class="admin-topbar">
-    <div class="admin-topbar__inner">
-      <a class="admin-topbar__brand" href="menu.html">Burger.Place Admin</a>
-      <button type="button" class="admin-topbar__logout" data-admin-logout hidden
-              style="padding:8px 16px;border-radius:999px;font-weight:600;font-size:13px;
-                     background:var(--color-bg-soft);border:1.5px solid var(--color-line);cursor:pointer;">
-        Sign out
-      </button>
-    </div>
-  </header>
-
+  <!-- Slice 3: Auth sections — only one is visible at a time -->
   <main id="admin-root">
-    <!-- Slice 3 will populate this with login form, orders list, empty states -->
-    <div class="admin-main">
-      <p>Admin shell — orders dashboard loads in slices 3 and 4.</p>
-    </div>
+
+    <!-- 3.1: Magic-link login form -->
+    <section class="admin-login" data-admin-auth="login" hidden>
+      <div class="admin-login__card">
+        <h1>Sign in</h1>
+        <p>Enter your email and we'll send you a one-time login link.</p>
+        <form id="admin-login-form" novalidate>
+          <label for="admin-email">Email</label>
+          <input
+            type="email"
+            id="admin-email"
+            name="email"
+            autocomplete="email"
+            placeholder="chef@burger.place"
+            required
+          />
+          <button type="submit">Send login link</button>
+        </form>
+        <p class="admin-login__status" data-admin-login-status aria-live="polite" hidden></p>
+      </div>
+    </section>
+
+    <!-- 3.1: Main admin shell (visible when session + admin role) -->
+    <section class="admin-shell" data-admin-auth="shell" hidden>
+      <header class="admin-shell__topbar">
+        <div class="admin-shell__topbar-inner">
+          <span class="admin-shell__brand">Burger.Place</span>
+          <span class="admin-shell__topbar-user" data-admin-topbar-user></span>
+          <button type="button" class="admin-shell__signout" data-admin-logout>Sign out</button>
+        </div>
+      </header>
+      <div class="admin-shell__main">
+        <aside class="admin-shell__aside" data-admin-aside-skeleton>
+          <!-- Slice 4: filter rail -->
+        </aside>
+        <section class="admin-shell__orders" data-admin-orders-host>
+          <p data-admin-empty>Loading…</p>
+        </section>
+        <section class="admin-shell__detail" data-admin-detail hidden>
+          <p data-admin-detail-empty hidden></p>
+        </section>
+      </div>
+    </section>
+
+    <!-- 3.1: Role mismatch (visible when session but non-admin) -->
+    <section class="admin-role-mismatch" data-admin-auth="role-mismatch" hidden>
+      <div class="admin-role-mismatch__card">
+        <h1>Account not authorized</h1>
+        <p>Your account isn't an admin. Sign in with a chef account.</p>
+        <button type="button" data-admin-mismatch-signout>Sign out</button>
+      </div>
+    </section>
+
   </main>
 
-  <!-- 3. Initialize Supabase client (deferred to slices 3 and 4 for full auth + orders logic) -->
+  <!-- Initialize Supabase client (slice 1 init; bpAdminAuth uses it) -->
   <script>
     (function () {
       'use strict';
@@ -174,6 +421,225 @@
       }
     })();
   </script>
+
+  <!-- ===========================================================================
+       Slice 3: bpAdminAuth — magic-link auth gate
+       =========================================================================== -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- State ---------- */
+    var currentSession = null;
+    var currentRole    = null;
+    var currentEmail   = null;
+
+    /* ---------- DOM refs ---------- */
+    var elLogin         = document.querySelector('[data-admin-auth="login"]');
+    var elShell         = document.querySelector('[data-admin-auth="shell"]');
+    var elRoleMismatch  = document.querySelector('[data-admin-auth="role-mismatch"]');
+    var form            = document.getElementById('admin-login-form');
+    var input           = document.getElementById('admin-email');
+    var statusEl        = document.querySelector('[data-admin-login-status]');
+    var topbarUser      = document.querySelector('[data-admin-topbar-user]');
+    var signoutBtn      = document.querySelector('[data-admin-logout]');
+    var mismatchSignout = document.querySelector('[data-admin-mismatch-signout]');
+
+    /* ---------- Session detection ---------- */
+    async function checkSession() {
+      if (!window.supabase) {
+        console.warn('[bpAdminAuth] Supabase client not ready');
+        return;
+      }
+      var result = await window.supabase.auth.getSession();
+      if (result.error) {
+        console.error('[bpAdminAuth] getSession error:', result.error.message);
+      }
+      applySession(result.data?.session || null);
+    }
+
+    /* ---------- Apply session to UI ---------- */
+    function applySession(session) {
+      currentSession = session;
+      if (!session) {
+        currentRole  = null;
+        currentEmail = null;
+        renderState('login');
+        return;
+      }
+      currentEmail = session.user?.email || null;
+      currentRole  = session.user?.app_metadata?.role || null;
+      if (currentRole === 'admin') {
+        renderState('shell');
+      } else {
+        currentRole = null;
+        renderState('role-mismatch');
+      }
+    }
+
+    /* ---------- Render auth-state visibility ---------- */
+    function renderState(state) {
+      /* Hide all sections first */
+      elLogin.setAttribute('hidden', '');
+      elShell.setAttribute('hidden', '');
+      elRoleMismatch.setAttribute('hidden', '');
+
+      if (state === 'login') {
+        elLogin.removeAttribute('hidden');
+        /* Clear stale status */
+        statusEl.textContent = '';
+        statusEl.setAttribute('hidden', '');
+        form.reset();
+      } else if (state === 'shell') {
+        elShell.removeAttribute('hidden');
+        if (topbarUser) topbarUser.textContent = currentEmail || '';
+        /* Fire bp-admin-ready so slice 4 can initialise orders */
+        window.dispatchEvent(new CustomEvent('bp-admin-ready'));
+      } else if (state === 'role-mismatch') {
+        elRoleMismatch.removeAttribute('hidden');
+      }
+    }
+
+    /* ---------- Magic-link submit ---------- */
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      if (!window.supabase) return;
+
+      var email = (input.value || '').trim();
+      /* Basic format check */
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        statusEl.textContent = 'Please enter a valid email address.';
+        statusEl.removeAttribute('hidden');
+        return;
+      }
+
+      statusEl.textContent = 'Sending\u2026';
+      statusEl.removeAttribute('hidden');
+
+      /* Magic-link redirect-to must be the absolute URL of this page */
+      var redirectTo = window.location.origin + window.location.pathname;
+
+      var _result = await window.supabase.auth.signInWithOtp({
+        email: email,
+        options: {
+          emailRedirectTo: redirectTo
+        }
+      });
+
+      if (_result.error) {
+        statusEl.textContent = 'Couldn\'t send link. Try again or contact support.';
+        statusEl.removeAttribute('hidden');
+      } else {
+        statusEl.textContent = 'Check your inbox for the login link.';
+        statusEl.removeAttribute('hidden');
+        form.reset();
+      }
+    }
+
+    /* ---------- Sign out ---------- */
+    async function handleSignOut() {
+      if (!window.supabase) return;
+      await window.supabase.auth.signOut();
+      currentSession = null;
+      currentRole    = null;
+      currentEmail   = null;
+      renderState('login');
+    }
+
+    /* ---------- Event bindings ---------- */
+    form.addEventListener('submit', handleLoginSubmit);
+    if (signoutBtn) signoutBtn.addEventListener('click', handleSignOut);
+    if (mismatchSignout) mismatchSignout.addEventListener('click', handleSignOut);
+
+    window.supabase.auth.onAuthStateChange(function (event, session) {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        applySession(session);
+      } else if (event === 'SIGNED_OUT') {
+        applySession(null);
+      }
+    });
+
+    /* Expose auth internals for slice-4 and DevTools debugging */
+    window.__bpAdmin = {
+      auth: {
+        isAdmin: function () { return currentRole === 'admin'; },
+        getEmail: function () { return currentEmail; }
+      }
+    };
+
+    /* ---------- Init ---------- */
+    document.addEventListener('DOMContentLoaded', checkSession);
+
+  })();
+  </script>
+
+  <!-- ===========================================================================
+       Slice 3 — Manual verification checklist
+       ===========================================================================
+       Prerequisites:
+         • A chef account exists in Supabase Authentication.
+         • That account has app_metadata.role = 'admin' (set via
+           Supabase Studio → Authentication → Users → raw_app_meta_data
+           or via SQL: UPDATE auth.users SET raw_app_meta_data =
+           raw_app_meta_data || '{"role":"admin"}'::jsonb WHERE email = 'chef@...')
+         • supabase-config.js is filled in (URL + publishable key).
+         • The three SQL migrations (001/002/003) have been run in Supabase.
+
+       Steps (run in Chrome DevTools unless noted):
+       ---------------------------------------------------------------------------
+       1. Clear all site data for the admin.html origin (Application tab →
+          Storage → Clear site data) to ensure no residual session.
+          Open admin.html — login form should be visible; shell and
+          role-mismatch sections must be hidden.
+
+       2. Enter a valid chef email in the login field and submit.
+          In Network tab, confirm a request to /auth/v1/otp returns HTTP 200.
+          The status element must show "Check your inbox for the login link."
+          within the login section (not in shell or mismatch sections).
+
+       3. Open the magic link from the inbox (or use Supabase Studio →
+          Authentication → Users → "Send magic link" as fallback).
+          The link loads admin.html with an access_token in the URL fragment;
+          detectSessionInUrl: true parses it and establishes the session.
+          Admin shell should appear immediately; topbar shows the chef's email
+          and the "Sign out" button is visible.
+
+       4. Reload admin.html without clearing storage.
+          The shell must remain visible (session restored from localStorage).
+
+       5. Sign out via the topbar "Sign out" button.
+          Login form reappears; shell and role-mismatch are hidden.
+
+       6. Pre-condition for next two tests: sign in with a NON-admin account
+          (app_metadata.role is absent or is not 'admin').
+          Role-mismatch section appears with "Account not authorized" message
+          and a "Sign out" button. The shell is hidden.
+
+       7. From the role-mismatch view, click "Sign out".
+          Return to the login form — no shell or mismatch visible.
+
+       8. (Optional / DevTools only)
+          Manually inject an admin session token via browser console:
+            localStorage.setItem('sb-<project>-auth-token',
+              JSON.stringify({ token: { access_token: '…', provider_token: null,
+                  user: { id: '…', email: 'admin@…',
+                  app_metadata: { role: 'admin' } } } }))
+          Refresh — shell should appear immediately without the login flow.
+
+       9. RLS perimeter test (requires two browser profiles or incognito):
+          — Incognito (no session): open admin.html.
+            In DevTools console run:
+              supabase.from('orders').select('*')
+            Expected: HTTP 200 with zero rows (anon INSERT policy lets you
+            INSERT but RLS blocks reads until signed in).
+          — Admin session: same console call returns all order rows visible
+            to the admin policy.
+
+      10. No secret-key strings in browser-loaded files:
+          In burger-site-draft/, search for the Supabase secret-key prefix
+          and for JWT-like Bearer token strings. Both searches must return
+          zero matches (exit 1).
+       =========================================================================== -->
 
 </body>
 </html>
