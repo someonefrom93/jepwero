@@ -1,0 +1,14 @@
+.env
+
+# Environment & credentials
+burger-site-draft/supabase-config.js
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE junk
+.vscode/
+.idea/
+*.swp
+*.swo
