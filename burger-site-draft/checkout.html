@@ -446,11 +446,25 @@
         var cart = readCart();
         if (!cart) { redirectToMenu(); return; }
 
-        if (!window.supabase && window.__bpSupabase) {
-          window.supabase = window.supabase.createClient(window.__bpSupabase.url, window.__bpSupabase.publishableKey,
-            { auth: { persistSession: true, autoRefreshToken: true } });
+        // Initialize Supabase client. The SDK exposes window.supabase.createClient();
+        // we assign the resulting client to the local `supabase` variable (not window.supabase,
+        // which is the SDK global and must be preserved for createClient calls).
+        if (window.supabase && typeof window.supabase.createClient === 'function' && window.__bpSupabase) {
+          supabase = window.supabase.createClient(
+            window.__bpSupabase.url,
+            window.__bpSupabase.publishableKey,
+            { auth: { persistSession: true, autoRefreshToken: true } }
+          );
         }
-        supabase = window.supabase;
+        if (!supabase) {
+          var initErrEl = document.getElementById('checkout-form-errors');
+          if (initErrEl) {
+            initErrEl.textContent = 'Checkout is unavailable: Supabase client failed to initialize. Check supabase-config.js.';
+            initErrEl.hidden = false;
+          }
+          document.getElementById('checkout-submit').disabled = true;
+          return;
+        }
 
         attachBlurValidation();
         attachSubmitGuard();
