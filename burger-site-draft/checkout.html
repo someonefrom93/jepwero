@@ -398,7 +398,9 @@
                 });
             })
             .catch(function (err) {
-              var msg = 'We couldn\'t place your order. Check your connection and try again.';
+              console.error('[checkout] submit failed:', err);
+              var detail = (err && err.message) ? ' (' + err.message + ')' : '';
+              var msg = 'We couldn\'t place your order' + detail + '. Please try again, or contact the restaurant if the problem persists.';
               var errEl = document.getElementById('checkout-form-errors');
               if (errEl) { errEl.textContent = msg; errEl.hidden = false; }
               submitting = false;
