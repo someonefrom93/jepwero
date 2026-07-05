@@ -1,0 +1,2141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu — Burger Place</title>
+
+  <!--
+    ==========================================================================
+    Menu page — Layout Draft
+    ==========================================================================
+    Sections (in order):
+      - Top bar (logo + back-to-home)
+      - Page hero
+      - Sticky category nav (pill buttons that jump to anchors)
+      - Menu categories (Limited Time, Burgers, Chicken, Bowls, Sides, Kids,
+        Shakes, Drinks)
+      - Footer (same as index.html)
+
+    Swap points (look for "TODO" comments):
+      - Brand colors / fonts       (CSS :root vars — same palette as index)
+      - Logo
+      - Hero copy
+      - Items: name, description, price, image, calories
+      - Category names (also update the sticky nav)
+      - Footer link list + social URLs
+
+    Pricing is placeholder ($X.XX). Replace before launch.
+    ==========================================================================
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ---------- Design tokens (same as index) ---------- */
+    :root {
+      --color-primary: #b8312f;
+      --color-primary-dark: #8c2523;
+      --color-accent: #f4b942;
+      --color-bg: #ffffff;
+      --color-bg-soft: #f8f5f0;
+      --color-ink: #1a1a1a;
+      --color-ink-soft: #555;
+      --color-muted: #8a8a8a;
+      --color-line: #e6e1d8;
+
+      --font-display: 'Poppins', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 30px rgba(0,0,0,0.10);
+      --container: 1200px;
+      --section-pad-y: clamp(64px, 8vw, 120px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 140px; /* offset for sticky nav */ }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-ink);
+      background: var(--color-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; }
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      margin: 0 0 .5em;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      transition: transform .15s ease, background .2s ease, color .2s ease;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn--primary { background: var(--color-primary); color: #fff; }
+    .btn--primary:hover { background: var(--color-primary-dark); }
+    .btn--dark { background: var(--color-ink); color: #fff; }
+    .btn--dark:hover { background: var(--color-primary); }
+    .btn--ghost {
+      background: transparent;
+      color: var(--color-ink);
+      border: 1.5px solid var(--color-line);
+    }
+    .btn--ghost:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+    /* =====================================================================
+       TOP BAR
+       ===================================================================== */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-line);
+    }
+    .topbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+    .topbar__logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .topbar__logo span { color: var(--color-primary); }
+
+    /* =====================================================================
+       HERO
+       ===================================================================== */
+    .menu-hero {
+      background: linear-gradient(180deg, var(--color-bg-soft) 0%, #fff 100%);
+      padding: clamp(56px, 7vw, 96px) 0 clamp(40px, 5vw, 64px);
+      text-align: center;
+    }
+    .menu-hero__eyebrow {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+    .menu-hero__title {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .menu-hero__sub {
+      color: var(--color-ink-soft);
+      max-width: 56ch;
+      margin: 0 auto 24px;
+      font-size: 17px;
+    }
+    .menu-hero__actions {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    /* =====================================================================
+       STICKY CATEGORY NAV
+       ===================================================================== */
+    .cat-nav {
+      position: sticky;
+      top: 72px;          /* sits just under the topbar */
+      z-index: 40;
+      background: #fff;
+      border-bottom: 1px solid var(--color-line);
+    }
+    .cat-nav__inner {
+      display: flex;
+      gap: 8px;
+      padding: 14px 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .cat-nav__inner::-webkit-scrollbar { display: none; }
+    .cat-nav__pill {
+      flex-shrink: 0;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--color-ink-soft);
+      background: var(--color-bg-soft);
+      border: 1px solid transparent;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+      white-space: nowrap;
+    }
+    .cat-nav__pill:hover {
+      background: #fff;
+      color: var(--color-ink);
+      border-color: var(--color-line);
+    }
+    .cat-nav__pill.is-active {
+      background: var(--color-ink);
+      color: #fff;
+      border-color: var(--color-ink);
+    }
+
+    /* =====================================================================
+       CATEGORY SECTIONS
+       ===================================================================== */
+    .menu-section {
+      padding: clamp(48px, 6vw, 80px) 0;
+      border-bottom: 1px solid var(--color-line);
+    }
+    .menu-section:nth-child(even) { background: var(--color-bg-soft); }
+    .menu-section__head {
+      margin-bottom: clamp(28px, 4vw, 48px);
+    }
+    .menu-section__title {
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .menu-section__intro {
+      color: var(--color-ink-soft);
+      max-width: 60ch;
+      font-size: 16px;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    /* ---------- Item card ---------- */
+    .item {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--color-line);
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .item:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .menu-section:nth-child(even) .item { background: #fff; }
+    .item__media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: #eee;
+      overflow: hidden;
+    }
+    .item__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .item:hover .item__media img { transform: scale(1.04); }
+    .item__badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--color-primary);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .item__body {
+      padding: 18px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .item__head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .item__name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.25;
+    }
+    .item__price {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--color-primary);
+      white-space: nowrap;
+    }
+    .item__desc {
+      font-size: 14px;
+      color: var(--color-ink-soft);
+      margin: 0 0 14px;
+      flex: 1;
+    }
+    .item__meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+    }
+    .item__cal {
+      font-size: 12px;
+      color: var(--color-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .item__order {
+      font-size: 13px;
+      padding: 8px 14px;
+    }
+
+    /* =====================================================================
+       FOOTER (same as index)
+       ===================================================================== */
+    .footer {
+      background: var(--color-ink);
+      color: #d9d9d9;
+      padding: clamp(56px, 7vw, 96px) 0 32px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 1fr);
+      gap: clamp(32px, 4vw, 64px);
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer__brand p {
+      color: #b3b3b3;
+      font-size: 14px;
+      max-width: 32ch;
+      margin: 14px 0 22px;
+    }
+    .footer__logo {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.01em;
+      color: #fff;
+    }
+    .footer__logo span { color: var(--color-primary); }
+    .footer__socials {
+      display: flex;
+      gap: 10px;
+    }
+    .footer__social {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      transition: background .2s ease, transform .15s ease;
+    }
+    .footer__social:hover {
+      background: var(--color-primary);
+      transform: translateY(-2px);
+    }
+    .footer__social svg { width: 18px; height: 18px; }
+    .footer__col h5 {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #fff;
+      margin: 0 0 16px;
+    }
+    .footer__col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .footer__col a {
+      font-size: 14px;
+      color: #b3b3b3;
+      transition: color .15s ease;
+    }
+    .footer__col a:hover { color: #fff; }
+    .footer__bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-top: 28px;
+      font-size: 13px;
+      color: #888;
+    }
+    .footer__bottom-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .footer__bottom-links a:hover { color: #fff; }
+
+    @media (max-width: 860px) {
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 540px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Cart drawer (slice 1) ---------- */
+    .topbar__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .topbar__cart {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-line);
+      background: transparent;
+      color: var(--color-ink);
+      position: relative;
+      transition: border-color .15s ease, color .15s ease;
+      text-decoration: none;
+    }
+    .topbar__cart:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .topbar__cart-count {
+      display: none;
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 9px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 11px;
+      line-height: 18px;
+      text-align: center;
+      padding: 0 4px;
+    }
+
+    .cart-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      pointer-events: none;
+    }
+    .cart-drawer[aria-hidden="false"] {
+      pointer-events: auto;
+    }
+    .cart-drawer__backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 55;
+      background: rgba(0,0,0,0.45);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .2s ease;
+      visibility: hidden;
+      transition-delay: .2s;
+    }
+    .cart-drawer[aria-hidden="false"] .cart-drawer__backdrop {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+    .cart-drawer__panel {
+      position: fixed;
+      inset: 0 0 0 auto;
+      width: min(420px, 92vw);
+      z-index: 60;
+      background: var(--color-bg);
+      box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .25s ease;
+      visibility: hidden;
+      transition-delay: .25s;
+    }
+    .cart-drawer[aria-hidden="false"] .cart-drawer__panel {
+      transform: translateX(0);
+      visibility: visible;
+      transition-delay: 0s;
+    }
+    .cart-drawer__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--color-line);
+    }
+    .cart-drawer__title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+    }
+    .cart-drawer__close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-line);
+      background: transparent;
+      font-size: 18px;
+      line-height: 1;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: border-color .15s ease, color .15s ease;
+    }
+    .cart-drawer__close:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .cart-drawer__body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+    }
+    .cart-drawer__empty {
+      text-align: center;
+      padding: 48px 16px;
+    }
+    .cart-drawer__empty-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .cart-drawer__empty-sub {
+      color: var(--color-ink-soft);
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+    }
+    .cart-drawer__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .cart-drawer__line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-line);
+    }
+    .cart-drawer__qty {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cart-drawer__qty-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid var(--color-line);
+      background: transparent;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--color-ink);
+      cursor: pointer;
+      transition: border-color .15s ease, color .15s ease;
+    }
+    .cart-drawer__qty-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+    .cart-drawer__remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      line-height: 1;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: color .15s ease;
+      flex-shrink: 0;
+    }
+    .cart-drawer__remove:hover {
+      color: var(--color-primary);
+    }
+    .cart-drawer__foot {
+      padding: 16px 20px;
+      border-top: 1px solid var(--color-line);
+    }
+    .cart-drawer__subtotal-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+    }
+    .cart-drawer__subtotal-note {
+      font-size: 0.75rem;
+      color: var(--color-ink-soft);
+      margin-top: 4px;
+    }
+    body.is-cart-open {
+      overflow: hidden;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cart-drawer__panel,
+      .cart-drawer__backdrop {
+        transition: none;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cart-drawer[aria-hidden="true"] .cart-drawer__panel,
+      .cart-drawer[aria-hidden="true"] .cart-drawer__backdrop {
+        transition-delay: 0s !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== TOP BAR ===================== -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <!-- TODO: replace with your logo -->
+      <a class="topbar__logo" href="index.html">Burger<span>.</span>Place</a>
+      <div class="topbar__actions">
+        <button
+          type="button"
+          class="topbar__cart"
+          data-cart-toggle
+          aria-label="Open cart"
+          aria-expanded="false"
+          aria-controls="cart-drawer"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true" focusable="false">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="topbar__cart-count" data-cart-count aria-hidden="true">0</span>
+        </button>
+        <a class="btn btn--ghost" href="index.html">← Back to Home</a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ===================== HERO ===================== -->
+  <section class="menu-hero">
+    <div class="container">
+      <span class="menu-hero__eyebrow">Our Menu</span>
+      <h1 class="menu-hero__title">Made fresh, made to order.</h1>
+      <p class="menu-hero__sub">
+        <!-- TODO: replace with your own intro copy -->
+        Every burger hand-pressed, every fry seasoned in-house.
+        Pickup, dine-in, or order ahead — your call.
+      </p>
+      <div class="menu-hero__actions">
+        <!-- TODO: wire to your ordering provider -->
+        <a class="btn btn--primary" href="index.html#locations">Order Pickup</a>
+        <a class="btn btn--ghost" href="index.html#locations">Find a Location</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== STICKY CATEGORY NAV ===================== -->
+  <nav class="cat-nav" aria-label="Menu categories">
+    <div class="container">
+      <div class="cat-nav__inner" data-catnav>
+        <!-- Each pill targets the matching section id below -->
+        <a class="cat-nav__pill is-active" href="#limited"     data-cat="limited">Limited Time</a>
+        <a class="cat-nav__pill"           href="#burgers"     data-cat="burgers">Signature Burgers</a>
+        <a class="cat-nav__pill"           href="#chicken"     data-cat="chicken">Chicken &amp; More</a>
+        <a class="cat-nav__pill"           href="#bowls"       data-cat="bowls">Bowls &amp; Salads</a>
+        <a class="cat-nav__pill"           href="#sides"       data-cat="sides">On the Side</a>
+        <a class="cat-nav__pill"           href="#kids"        data-cat="kids">Kids' Menu</a>
+        <a class="cat-nav__pill"           href="#shakes"      data-cat="shakes">Hand-Spun Shakes</a>
+        <a class="cat-nav__pill"           href="#drinks"      data-cat="drinks">Drinks</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ===================== LIMITED TIME OFFERS ===================== -->
+  <section class="menu-section" id="limited">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Limited Time Offers</h2>
+        <p class="menu-section__intro">
+          Seasonal specials available for a limited run. Get them while they last.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="lt:smokehouse-smash" data-name="Smokehouse Smash" data-price="1095" data-category="lt" data-cal="820 cal" data-img="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <!-- TODO: replace image -->
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80&auto=format&fit=crop" alt="Seasonal smash burger" />
+            <span class="item__badge">New</span>
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Smokehouse Smash</h3>
+              <span class="item__price">$10.95</span>
+            </div>
+            <p class="item__desc">
+              Double smashed patty, smoked cheddar, crispy onions,
+              bacon jam, and house aioli on a toasted brioche bun.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">820 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="lt:smokehouse-smash">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="lt:nashville-hot-chicken" data-name="Nashville Hot Chicken" data-price="995" data-category="lt" data-cal="740 cal" data-img="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=800&q=80&auto=format&fit=crop" alt="Spicy chicken sandwich" />
+            <span class="item__badge">Spicy</span>
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Nashville Hot Chicken</h3>
+              <span class="item__price">$9.95</span>
+            </div>
+            <p class="item__desc">
+              Hand-breaded chicken breast tossed in Nashville hot oil,
+              dill pickles, and cool ranch on a soft potato bun.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">740 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="lt:nashville-hot-chicken">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="lt:berry-lemonade" data-name="Berry Lemonade" data-price="425" data-category="lt" data-cal="180 cal" data-img="https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=800&q=80&auto=format&fit=crop" alt="Seasonal shake" />
+            <span class="item__badge">Seasonal</span>
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Berry Lemonade</h3>
+              <span class="item__price">$4.25</span>
+            </div>
+            <p class="item__desc">
+              Fresh-squeezed lemonade muddled with seasonal berries.
+              Sweet, tart, and super refreshing.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">180 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="lt:berry-lemonade">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== SIGNATURE BURGERS ===================== -->
+  <section class="menu-section" id="burgers">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Signature Burgers</h2>
+        <p class="menu-section__intro">
+          Hand-pressed, fresh-never-frozen beef, cooked to order.
+          Served with your choice of side.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="burgers:classic" data-name="The Classic" data-price="895" data-category="burgers" data-cal="640 cal" data-img="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80&auto=format&fit=crop" alt="Classic burger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">The Classic</h3>
+              <span class="item__price">$8.95</span>
+            </div>
+            <p class="item__desc">
+              Two patties, American cheese, lettuce, tomato, pickles,
+              onion, mustard, and ketchup.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">640 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="burgers:classic">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="burgers:bacon-cheeseburger" data-name="Bacon Cheeseburger" data-price="1050" data-category="burgers" data-cal="830 cal" data-img="https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1551615593-ef5fe247e8f7?w=800&q=80&auto=format&fit=crop" alt="Bacon cheeseburger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Bacon Cheeseburger</h3>
+              <span class="item__price">$10.50</span>
+            </div>
+            <p class="item__desc">
+              Two patties, four strips of bacon, cheddar, lettuce,
+              tomato, and house sauce.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">830 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="burgers:bacon-cheeseburger">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="burgers:mushroom-swiss" data-name="Mushroom Swiss" data-price="1025" data-category="burgers" data-cal="760 cal" data-img="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=800&q=80&auto=format&fit=crop" alt="Mushroom swiss burger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Mushroom Swiss</h3>
+              <span class="item__price">$10.25</span>
+            </div>
+            <p class="item__desc">
+              Two patties, sautéed mushrooms, melted Swiss,
+              garlic aioli, on a toasted bun.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">760 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="burgers:mushroom-swiss">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="burgers:spicy-southwest" data-name="Spicy Southwest" data-price="1095" data-category="burgers" data-cal="880 cal" data-img="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=800&q=80&auto=format&fit=crop" alt="Spicy southwest burger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Spicy Southwest</h3>
+              <span class="item__price">$10.95</span>
+            </div>
+            <p class="item__desc">
+              Two patties, pepper jack, pickled jalapeños,
+              crispy onions, and chipotle mayo.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">880 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="burgers:spicy-southwest">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="burgers:double-stack" data-name="The Double Stack" data-price="1150" data-category="burgers" data-cal="1010 cal" data-img="https://images.unsplash.com/photo-1550317138-10000687a72b?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1550317138-10000687a72b?w=800&q=80&auto=format&fit=crop" alt="Double cheeseburger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">The Double Stack</h3>
+              <span class="item__price">$11.50</span>
+            </div>
+            <p class="item__desc">
+              Three patties, three slices of American cheese,
+              special sauce, shredded lettuce.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">1010 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="burgers:double-stack">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="burgers:garden-veggie" data-name="Garden Veggie" data-price="950" data-category="burgers" data-cal="520 cal" data-img="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?w=800&q=80&auto=format&fit=crop" alt="Veggie burger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Garden Veggie</h3>
+              <span class="item__price">$9.50</span>
+            </div>
+            <p class="item__desc">
+              House-made veggie patty, mixed greens,
+              tomato, avocado, and herb mayo.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">520 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="burgers:garden-veggie">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== CHICKEN & MORE ===================== -->
+  <section class="menu-section" id="chicken">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Chicken &amp; More</h2>
+        <p class="menu-section__intro">
+          Crispy, grilled, or wrapped — plus hot dogs and steak melts.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="chicken:crispy-chicken-sandwich" data-name="Crispy Chicken Sandwich" data-price="950" data-category="chicken" data-cal="680 cal" data-img="https://images.unsplash.com/photo-1606755456206-b25206cde27e?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1606755456206-b25206cde27e?w=800&q=80&auto=format&fit=crop" alt="Crispy chicken sandwich" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Crispy Chicken Sandwich</h3>
+              <span class="item__price">$9.50</span>
+            </div>
+            <p class="item__desc">
+              Hand-breaded chicken, dill pickles, lettuce,
+              and house mayo on a brioche bun.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">680 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="chicken:crispy-chicken-sandwich">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="chicken:grilled-chicken-club" data-name="Grilled Chicken Club" data-price="1025" data-category="chicken" data-cal="610 cal" data-img="https://images.unsplash.com/photo-1539252554935-80e1e60bb3a3?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1539252554935-80e1e60bb3a3?w=800&q=80&auto=format&fit=crop" alt="Grilled chicken sandwich" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Grilled Chicken Club</h3>
+              <span class="item__price">$10.25</span>
+            </div>
+            <p class="item__desc">
+              Grilled chicken breast, bacon, Swiss, lettuce,
+              tomato, and avocado on toasted sourdough.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">610 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="chicken:grilled-chicken-club">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="chicken:chicken-tenders" data-name="Chicken Tenders" data-price="925" data-category="chicken" data-cal="520 cal" data-img="https://images.unsplash.com/photo-1612392062798-2bb6fcae7e4f?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1612392062798-2bb6fcae7e4f?w=800&q=80&auto=format&fit=crop" alt="Chicken tenders" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Chicken Tenders</h3>
+              <span class="item__price">$9.25</span>
+            </div>
+            <p class="item__desc">
+              Five all-white-meat tenders, golden-fried.
+              Pick your dipping sauce.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">520 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="chicken:chicken-tenders">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="chicken:classic-hot-dog" data-name="Classic Hot Dog" data-price="650" data-category="chicken" data-cal="450 cal" data-img="https://images.unsplash.com/photo-1612392061787-2d078b3e573a?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1612392061787-2d078b3e573a?w=800&q=80&auto=format&fit=crop" alt="Hot dog" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Classic Hot Dog</h3>
+              <span class="item__price">$6.50</span>
+            </div>
+            <p class="item__desc">
+              All-beef dog on a soft bun. Optional chili,
+              cheese, and onions on request.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">450 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="chicken:classic-hot-dog">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== BOWLS & SALADS ===================== -->
+  <section class="menu-section" id="bowls">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Bowls &amp; Salads</h2>
+        <p class="menu-section__intro">
+          Lighter options that don't feel light.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="bowls:cobb-salad" data-name="Cobb Salad" data-price="1150" data-category="bowls" data-cal="620 cal" data-img="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80&auto=format&fit=crop" alt="Cobb salad" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Cobb Salad</h3>
+              <span class="item__price">$11.50</span>
+            </div>
+            <p class="item__desc">
+              Mixed greens, grilled chicken, bacon, egg,
+              tomato, blue cheese, and ranch.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">620 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="bowls:cobb-salad">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="bowls:classic-caesar" data-name="Classic Caesar" data-price="995" data-category="bowls" data-cal="420 cal" data-img="https://images.unsplash.com/photo-1551248429-40975aa4de74?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1551248429-40975aa4de74?w=800&q=80&auto=format&fit=crop" alt="Caesar salad" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Classic Caesar</h3>
+              <span class="item__price">$9.95</span>
+            </div>
+            <p class="item__desc">
+              Romaine, parmesan, house croutons,
+              creamy Caesar dressing.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">420 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="bowls:classic-caesar">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="bowls:build-your-own-bowl" data-name="Build-Your-Own Bowl" data-price="1095" data-category="bowls" data-cal="Varies" data-img="https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=800&q=80&auto=format&fit=crop" alt="Burger bowl" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Build-Your-Own Bowl</h3>
+              <span class="item__price">$10.95</span>
+            </div>
+            <p class="item__desc">
+              Pick your base (lettuce, fries, or tots),
+              protein, and toppings.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">Varies</span>
+              <button type="button" class="btn btn--primary item__order" data-add="bowls:build-your-own-bowl">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== ON THE SIDE ===================== -->
+  <section class="menu-section" id="sides">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">On the Side</h2>
+        <p class="menu-section__intro">
+          Hand-cut, seasoned in-house, and fried golden.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="sides:hand-cut-fries" data-name="Hand-Cut Fries" data-price="395" data-category="sides" data-cal="320 cal" data-img="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=800&q=80&auto=format&fit=crop" alt="French fries" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Hand-Cut Fries</h3>
+              <span class="item__price">$3.95</span>
+            </div>
+            <p class="item__desc">
+              Crispy on the outside, fluffy inside.
+              Sea salt and a touch of pepper.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">320 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="sides:hand-cut-fries">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="sides:cheese-fries" data-name="Cheese Fries" data-price="550" data-category="sides" data-cal="510 cal" data-img="https://images.unsplash.com/photo-1585109649139-366815a0d713?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1585109649139-366815a0d713?w=800&q=80&auto=format&fit=crop" alt="Cheese fries" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Cheese Fries</h3>
+              <span class="item__price">$5.50</span>
+            </div>
+            <p class="item__desc">
+              Topped with melty cheddar sauce and a
+              sprinkle of fresh chives.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">510 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="sides:cheese-fries">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="sides:onion-rings" data-name="Onion Rings" data-price="495" data-category="sides" data-cal="430 cal" data-img="https://images.unsplash.com/photo-1639024471283-03518883512d?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?w=800&q=80&auto=format&fit=crop" alt="Onion rings" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Onion Rings</h3>
+              <span class="item__price">$4.95</span>
+            </div>
+            <p class="item__desc">
+              Thick-cut, beer-battered, fried crisp.
+              Served with smoky aioli.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">430 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="sides:onion-rings">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="sides:mozzarella-sticks" data-name="Mozzarella Sticks" data-price="625" data-category="sides" data-cal="480 cal" data-img="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=800&q=80&auto=format&fit=crop" alt="Mozzarella sticks" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Mozzarella Sticks</h3>
+              <span class="item__price">$6.25</span>
+            </div>
+            <p class="item__desc">
+              Golden-fried with a melty pull.
+              Marinara on the side.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">480 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="sides:mozzarella-sticks">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== KIDS' MENU ===================== -->
+  <section class="menu-section" id="kids">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Kids' Menu</h2>
+        <p class="menu-section__intro">
+          Smaller portions for smaller appetites. Comes with a side and drink.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="kids:burger" data-name="Kids' Burger" data-price="695" data-category="kids" data-cal="380 cal" data-img="https://images.unsplash.com/photo-1550317138-10000687a72b?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1550317138-10000687a72b?w=800&q=80&auto=format&fit=crop" alt="Kids burger" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Kids' Burger</h3>
+              <span class="item__price">$6.95</span>
+            </div>
+            <p class="item__desc">
+              Mini beef patty on a soft bun with cheese.
+              Served with fries or apple slices.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">380 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="kids:burger">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="kids:tenders" data-name="Kids' Tenders" data-price="695" data-category="kids" data-cal="340 cal" data-img="https://images.unsplash.com/photo-1562967914-608f82629710?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1562967914-608f82629710?w=800&q=80&auto=format&fit=crop" alt="Kids chicken nuggets" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Kids' Tenders</h3>
+              <span class="item__price">$6.95</span>
+            </div>
+            <p class="item__desc">
+              Three chicken tenders with dipping sauce.
+              Served with fries or apple slices.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">340 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="kids:tenders">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="kids:grilled-cheese" data-name="Grilled Cheese" data-price="595" data-category="kids" data-cal="320 cal" data-img="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=800&q=80&auto=format&fit=crop" alt="Grilled cheese" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Grilled Cheese</h3>
+              <span class="item__price">$5.95</span>
+            </div>
+            <p class="item__desc">
+              Melted American on toasted white bread.
+              Served with fries or apple slices.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">320 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="kids:grilled-cheese">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== HAND-SPUN SHAKES ===================== -->
+  <section class="menu-section" id="shakes">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Hand-Spun Shakes</h2>
+        <p class="menu-section__intro">
+          Real ice cream, spun thick, topped with whipped cream.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="shakes:classic-vanilla" data-name="Classic Vanilla" data-price="595" data-category="shakes" data-cal="580 cal" data-img="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80&auto=format&fit=crop&sat=-100">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&q=80&auto=format&fit=crop&sat=-100" alt="Vanilla shake" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Classic Vanilla</h3>
+              <span class="item__price">$5.95</span>
+            </div>
+            <p class="item__desc">
+              The original. Real vanilla bean, milk, and
+              a swirl of whipped cream.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">580 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="shakes:classic-vanilla">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="shakes:chocolate" data-name="Chocolate" data-price="595" data-category="shakes" data-cal="620 cal" data-img="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=800&q=80&auto=format&fit=crop" alt="Chocolate shake" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Chocolate</h3>
+              <span class="item__price">$5.95</span>
+            </div>
+            <p class="item__desc">
+              Rich cocoa blended thick and topped
+              with chocolate drizzle.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">620 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="shakes:chocolate">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="shakes:strawberry" data-name="Strawberry" data-price="595" data-category="shakes" data-cal="540 cal" data-img="https://images.unsplash.com/photo-1626078436980-fc4d4d9d6efd?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1626078436980-fc4d4d9d6efd?w=800&q=80&auto=format&fit=crop" alt="Strawberry shake" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Strawberry</h3>
+              <span class="item__price">$5.95</span>
+            </div>
+            <p class="item__desc">
+              Fresh strawberries blended with vanilla ice cream.
+              Fruity and creamy.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">540 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="shakes:strawberry">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="shakes:cookies-cream" data-name="Cookies &amp; Cream" data-price="625" data-category="shakes" data-cal="660 cal" data-img="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=800&q=80&auto=format&fit=crop" alt="Cookies and cream shake" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Cookies &amp; Cream</h3>
+              <span class="item__price">$6.25</span>
+            </div>
+            <p class="item__desc">
+              Crushed chocolate cookies spun into
+              vanilla ice cream.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">660 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="shakes:cookies-cream">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="shakes:salted-caramel" data-name="Salted Caramel" data-price="650" data-category="shakes" data-cal="700 cal" data-img="https://images.unsplash.com/photo-1560008581-09826d1de69e?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1560008581-09826d1de69e?w=800&q=80&auto=format&fit=crop" alt="Salted caramel shake" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Salted Caramel</h3>
+              <span class="item__price">$6.50</span>
+            </div>
+            <p class="item__desc">
+              Buttery caramel, a pinch of sea salt,
+              and whipped cream on top.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">700 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="shakes:salted-caramel">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== DRINKS ===================== -->
+  <section class="menu-section" id="drinks">
+    <div class="container">
+      <header class="menu-section__head">
+        <h2 class="menu-section__title">Drinks</h2>
+        <p class="menu-section__intro">
+          Fountain sodas, fresh-brewed tea, lemonade, and bottled water.
+        </p>
+      </header>
+
+      <div class="menu-grid">
+
+        <article class="item" data-id="drinks:fountain-soda" data-name="Fountain Soda" data-price="295" data-category="drinks" data-cal="0–310 cal" data-img="https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=800&q=80&auto=format&fit=crop" alt="Fountain drink" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Fountain Soda</h3>
+              <span class="item__price">$2.95</span>
+            </div>
+            <p class="item__desc">
+              Free refills in-store. Pick your favorite.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">0–310 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="drinks:fountain-soda">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="drinks:fresh-brewed-iced-tea" data-name="Fresh-Brewed Iced Tea" data-price="295" data-category="drinks" data-cal="5 cal" data-img="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&q=80&auto=format&fit=crop" alt="Iced tea" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Fresh-Brewed Iced Tea</h3>
+              <span class="item__price">$2.95</span>
+            </div>
+            <p class="item__desc">
+              Unsweetened or sweet. Free refills in-store.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">5 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="drinks:fresh-brewed-iced-tea">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="drinks:lemonade" data-name="Lemonade" data-price="350" data-category="drinks" data-cal="220 cal" data-img="https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1437418747212-8d9709afab22?w=800&q=80&auto=format&fit=crop" alt="Lemonade" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Lemonade</h3>
+              <span class="item__price">$3.50</span>
+            </div>
+            <p class="item__desc">
+              Fresh-squeezed. Tart, sweet, and bright.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">220 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="drinks:lemonade">Add</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="item" data-id="drinks:bottled-water" data-name="Bottled Water" data-price="225" data-category="drinks" data-cal="0 cal" data-img="https://images.unsplash.com/photo-1564419320461-6870880221ad?w=800&q=80&auto=format&fit=crop">
+          <div class="item__media">
+            <img src="https://images.unsplash.com/photo-1564419320461-6870880221ad?w=800&q=80&auto=format&fit=crop" alt="Bottled water" />
+          </div>
+          <div class="item__body">
+            <div class="item__head">
+              <h3 class="item__name">Bottled Water</h3>
+              <span class="item__price">$2.25</span>
+            </div>
+            <p class="item__desc">
+              Still or sparkling.
+            </p>
+            <div class="item__meta">
+              <span class="item__cal">0 cal</span>
+              <button type="button" class="btn btn--primary item__order" data-add="drinks:bottled-water">Add</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== FOOTER (same as index) ===================== -->
+  <footer class="footer">
+    <div class="container">
+
+      <div class="footer__grid">
+
+        <div class="footer__brand">
+          <!-- TODO: replace with your logo -->
+          <div class="footer__logo">Burger<span>.</span>Place</div>
+          <p>
+            <!-- TODO: replace with your tagline -->
+            Classic American burgers, made the right way — every time.
+          </p>
+          <div class="footer__socials">
+            <!-- TODO: replace with your social URLs -->
+            <a class="footer__social" href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a class="footer__social" href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a class="footer__social" href="#" aria-label="Twitter / X">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l16 16M20 4L4 20"/></svg>
+            </a>
+            <a class="footer__social" href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <h5>Visit</h5>
+          <!-- TODO: replace with your real links -->
+          <ul>
+            <li><a href="index.html#locations">Locations</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="#">Catering</a></li>
+            <li><a href="#">Gift Cards</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h5>Legal</h5>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Nutritional Info</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> Burger Place. All rights reserved.</span>
+        <div class="footer__bottom-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <aside
+    class="cart-drawer"
+    id="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cart-drawer-title"
+    aria-hidden="true"
+    data-cart-drawer
+  >
+    <div class="cart-drawer__backdrop" data-cart-close aria-hidden="true"></div>
+
+    <div class="cart-drawer__panel" role="document">
+      <header class="cart-drawer__head">
+        <h2 class="cart-drawer__title" id="cart-drawer-title">Your Cart</h2>
+        <button type="button" class="cart-drawer__close" data-cart-close aria-label="Close cart">×</button>
+      </header>
+
+      <div class="cart-drawer__body" data-cart-body aria-live="polite">
+        <div class="cart-drawer__empty" data-cart-empty>
+          <p class="cart-drawer__empty-title">Your cart is empty</p>
+          <p class="cart-drawer__empty-sub">Add something from the menu to get started.</p>
+          <a class="btn btn--primary" href="#limited" data-cart-close>Browse menu</a>
+        </div>
+        <ul class="cart-drawer__list" data-cart-list hidden></ul>
+      </div>
+
+      <footer class="cart-drawer__foot" data-cart-foot hidden>
+        <div class="cart-drawer__subtotal-row">
+          <span class="cart-drawer__subtotal-label">Subtotal</span>
+          <span class="cart-drawer__subtotal" data-cart-subtotal>$0.00</span>
+        </div>
+        <p class="cart-drawer__subtotal-note">Taxes and pickup time calculated at checkout.</p>
+      </footer>
+    </div>
+  </aside>
+
+
+  <script>
+    /* ---------- Footer year ---------- */
+    document.querySelectorAll('[data-year]').forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+
+    /* ---------- Category nav active state on scroll ---------- */
+    (function () {
+      const navLinks = Array.from(document.querySelectorAll('[data-cat]'));
+      const sections = navLinks
+        .map(link => document.getElementById(link.dataset.cat))
+        .filter(Boolean);
+
+      if (!sections.length) return;
+
+      // Highlight the section closest to the top of the viewport
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const id = entry.target.id;
+              navLinks.forEach(link =>
+                link.classList.toggle('is-active', link.dataset.cat === id)
+              );
+            }
+          });
+        },
+        { rootMargin: '-200px 0px -60% 0px', threshold: 0 }
+      );
+
+      sections.forEach(s => observer.observe(s));
+
+      // Auto-scroll the active pill into view in the horizontal nav
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          navLinks.forEach(l => l.classList.remove('is-active'));
+          link.classList.add('is-active');
+          link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        });
+      });
+    })();
+
+    /* === Slice 1 Manual Verification ===
+    1. Open menu.html — topbar shows cart icon (left of "← Back to Home"), no drawer visible.
+    2. Click cart icon — drawer slides in from right; focus is inside drawer.
+    3. Press Tab — focus cycles only inside drawer panel.
+    4. Press Shift+Tab from first element — focus wraps to last element inside drawer.
+    5. Press ESC — drawer closes; focus returns to cart icon; page scrollY unchanged.
+    6. Click backdrop — drawer closes; focus returns to cart icon.
+    7. Click × button — drawer closes; focus returns to cart icon.
+    8. Badge count shows 0 and is hidden via CSS.
+    */
+
+    /* ---------- Cart drawer module (slice 1) ---------- */
+    var cartDrawer = (function () {
+      var isOpen = false;
+      var previouslyFocused = null;
+      var el = document.querySelector('[data-cart-drawer]');
+      var panel = el && el.querySelector('.cart-drawer__panel');
+
+      var FOCUSABLE_SELECTOR = [
+        'a[href]',
+        'button:not([disabled])',
+        'input:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])'
+      ].join(',');
+
+      function queryFocusables() {
+        if (!panel) return [];
+        return Array.from(panel.querySelectorAll(FOCUSABLE_SELECTOR))
+          .filter(function (node) { return !node.hasAttribute('disabled') && node.offsetParent !== null; });
+      }
+
+      function focusFirst() {
+        var focusables = queryFocusables();
+        if (focusables.length) {
+          focusables[0].focus();
+          return;
+        }
+        panel.tabIndex = -1;
+        panel.focus();
+      }
+
+      var savedScrollY = 0;
+      function applyScrollLock() {
+        savedScrollY = window.scrollY;
+        document.body.style.overflow = 'hidden';
+      }
+      function restoreScroll() {
+        document.body.style.overflow = '';
+        window.scrollTo(0, savedScrollY);
+      }
+
+      var keydownHandler = null;
+      function onKeydown(e) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          close();
+          return;
+        }
+        if (e.key !== 'Tab') return;
+        var focusables = queryFocusables();
+        if (!focusables.length) {
+          e.preventDefault();
+          panel.focus();
+          return;
+        }
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        var active = document.activeElement;
+        if (e.shiftKey && (active === first || !panel.contains(active))) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+
+      function bindKeydown() {
+        keydownHandler = onKeydown;
+        document.addEventListener('keydown', keydownHandler);
+      }
+      function unbindKeydown() {
+        if (keydownHandler) {
+          document.removeEventListener('keydown', keydownHandler);
+          keydownHandler = null;
+        }
+      }
+
+      function open() {
+        if (isOpen) return;
+        previouslyFocused = document.activeElement;
+        el.setAttribute('aria-hidden', 'false');
+        var t = document.querySelector('[data-cart-toggle]');
+        if (t) t.setAttribute('aria-expanded', 'true');
+        isOpen = true;
+        document.body.classList.add('is-cart-open');
+        applyScrollLock();
+        focusFirst();
+        bindKeydown();
+      }
+
+      function close() {
+        if (!isOpen) return;
+        el.setAttribute('aria-hidden', 'true');
+        var t = document.querySelector('[data-cart-toggle]');
+        if (t) t.setAttribute('aria-expanded', 'false');
+        isOpen = false;
+        document.body.classList.remove('is-cart-open');
+        restoreScroll();
+        unbindKeydown();
+        if (previouslyFocused && previouslyFocused.focus) previouslyFocused.focus();
+      }
+
+      function toggle() { isOpen ? close() : open(); }
+
+      function mount() {
+        var _this = this;
+        document.querySelectorAll('[data-cart-toggle]').forEach(function (btn) {
+          btn.addEventListener('click', _this.toggle);
+        });
+        document.querySelectorAll('[data-cart-close]').forEach(function (btn) {
+          btn.addEventListener('click', close);
+        });
+      }
+
+      return {
+        open: open,
+        close: close,
+        toggle: toggle,
+        isOpen: function () { return isOpen; },
+        mount: mount
+      };
+    })();
+
+    /* Wire cart drawer on DOMContentLoaded */
+    document.addEventListener('DOMContentLoaded', function () {
+      cartDrawer.mount();
+    });
+
+    /* ---------- Slice 2: cart module (money + catalog + storage + cart + app) ---------- */
+    (function () {
+      'use strict';
+
+      /* --- money --- */
+      var money = (function () {
+        var formatter = (typeof Intl !== 'undefined' && Intl.NumberFormat)
+          ? new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
+          : null;
+
+        function formatPrice(cents) {
+          var n = Number(cents) | 0;
+          if (formatter) return formatter.format(n / 100);
+          var sign = n < 0 ? '-' : '';
+          var abs = Math.abs(n);
+          return sign + '$' + Math.floor(abs / 100) + '.' + String(abs % 100).padStart(2, '0');
+        }
+
+        return { formatPrice: formatPrice };
+      })();
+
+      /* --- catalog --- */
+      var catalog = (function () {
+        var items = new Map();
+
+        function parsePriceStrict(raw) {
+          if (typeof raw !== 'string') return null;
+          var cleaned = raw.replace(/[$,]/g, '').trim();
+          if (!/^\d+$/.test(cleaned)) return null;
+          var n = parseInt(cleaned, 10);
+          return n > 0 && n < 1e6 ? n : null;
+        }
+
+        function reindex() {
+          var next = new Map();
+          document.querySelectorAll('.menu-grid .item').forEach(function (card) {
+            var id = card.getAttribute('data-id');
+            var name = card.getAttribute('data-name');
+            var priceRaw = card.getAttribute('data-price');
+            var category = card.getAttribute('data-category');
+            var cal = card.getAttribute('data-cal');
+            var img = card.getAttribute('data-img');
+            if (!id) {
+              console.warn('catalog: skipping card — missing data-id', card.textContent.slice(0, 80));
+              return;
+            }
+            if (next.has(id)) {
+              console.warn('catalog: duplicate data-id "' + id + '", keeping first');
+              return;
+            }
+            var priceCents = parsePriceStrict(priceRaw);
+            if (priceCents === null) {
+              console.warn('catalog: skipping "' + id + '" — malformed data-price', priceRaw);
+              return;
+            }
+            next.set(id, Object.freeze({ id: id, name: name || '', priceCents: priceCents, category: category || '', cal: cal || '', img: img || '' }));
+          });
+          items = next;
+        }
+
+        function get(id) { return items.get(id) || null; }
+        function has(id) { return items.has(id); }
+        function size() { return items.size; }
+
+        return { reindex: reindex, get: get, has: has, size: size };
+      })();
+
+      /* --- storage --- */
+      var storage = (function () {
+        var STORAGE_KEY = 'bp-cart-v1';
+        var SCHEMA_VERSION = 1;
+        var available = false;
+        var onChange = null;
+
+        function detect() {
+          try {
+            localStorage.setItem('__bp_probe__', '1');
+            localStorage.removeItem('__bp_probe__');
+            available = true;
+          } catch (e) { available = false; }
+          return available;
+        }
+
+        function validate(state) {
+          if (!state || state.v !== SCHEMA_VERSION) return false;
+          if (!state.lines || typeof state.lines !== 'object') return false;
+          var keys = Object.keys(state.lines);
+          for (var i = 0; i < keys.length; i++) {
+            var line = state.lines[keys[i]];
+            if (!line || typeof line.qty !== 'number' || line.qty <= 0) return false;
+          }
+          return true;
+        }
+
+        function migrate(cart) {
+          if (!cart || typeof cart !== 'object') return cart;
+          if (cart.v === SCHEMA_VERSION) return cart;
+          return cart;
+        }
+
+        function read() {
+          if (!available) return null;
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return null;
+            var parsed = JSON.parse(raw);
+            var migrated = migrate(parsed);
+            if (!validate(migrated)) {
+              console.warn('bp-cart-v1: malformed payload, resetting');
+              return null;
+            }
+            return migrated;
+          } catch (e) {
+            console.warn('bp-cart-v1: parse error, resetting');
+            return null;
+          }
+        }
+
+        function write(state) {
+          if (!available) return;
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* swallow */ }
+        }
+
+        function attachChangeListener(fn) {
+          onChange = fn;
+          window.addEventListener('storage', function (e) {
+            if (e.key === STORAGE_KEY && typeof onChange === 'function') onChange();
+          });
+        }
+
+        return {
+          detect: detect,
+          read: read,
+          write: write,
+          attachChangeListener: attachChangeListener,
+          get available() { return available; },
+          get STORAGE_KEY() { return STORAGE_KEY; }
+        };
+      })();
+
+      /* --- cart --- */
+      var cart = (function () {
+        var lines = {};
+        var updatedAt = 0;
+        var subscribers = [];
+
+        function persist() {
+          updatedAt = Date.now();
+          storage.write({ v: 1, lines: lines, updatedAt: updatedAt });
+          notify();
+        }
+
+        function notify() {
+          for (var i = 0; i < subscribers.length; i++) {
+            subscribers[i]({ lines: lines, subtotalCents: subtotalCents() });
+          }
+        }
+
+        function subtotalCents() {
+          var entries = Object.entries(lines);
+          var sum = 0;
+          for (var i = 0; i < entries.length; i++) {
+            var item = catalog.get(entries[i][0]);
+            if (item) sum += item.priceCents * entries[i][1].qty;
+          }
+          return sum;
+        }
+
+        function addItem(id) {
+          if (!catalog.has(id)) { console.warn('cart.addItem: unknown id', id); return; }
+          if (!lines[id]) lines[id] = { qty: 0 };
+          lines[id].qty += 1;
+          persist();
+        }
+
+        function inc(id) {
+          if (!lines[id]) return;
+          lines[id].qty += 1;
+          persist();
+        }
+
+        function dec(id) {
+          if (!lines[id]) return;
+          if (lines[id].qty <= 1) { remove(id); return; }
+          lines[id].qty -= 1;
+          persist();
+        }
+
+        function remove(id) {
+          delete lines[id];
+          persist();
+        }
+
+        function clear() {
+          lines = {};
+          persist();
+        }
+
+        function hydrate() {
+          var saved = storage.read();
+          if (saved && saved.lines) {
+            lines = saved.lines;
+            updatedAt = saved.updatedAt || 0;
+          } else {
+            lines = {};
+          }
+          notify();
+        }
+
+        function linesArray() {
+          var result = [];
+          var entryList = Object.entries(lines);
+          for (var i = 0; i < entryList.length; i++) {
+            var item = catalog.get(entryList[i][0]);
+            if (item) {
+              result.push(Object.freeze({ id: entryList[i][0], qty: entryList[i][1].qty, item: item }));
+            }
+          }
+          return result;
+        }
+
+        function count() {
+          var vals = Object.values(lines);
+          var s = 0;
+          for (var i = 0; i < vals.length; i++) s += vals[i].qty;
+          return s;
+        }
+
+        function subscribe(fn) { subscribers.push(fn); }
+
+        return { addItem: addItem, inc: inc, dec: dec, remove: remove, clear: clear, hydrate: hydrate, subtotalCents: subtotalCents, lines: linesArray, count: count, subscribe: subscribe };
+      })();
+
+      /* --- app --- */
+      function updateBadge() {
+        var c = cart.count();
+        var badge = document.querySelector('[data-cart-count]');
+        if (!badge) return;
+        badge.textContent = c;
+        badge.style.display = c > 0 ? '' : 'none';
+      }
+
+      function renderDrawer() {
+        var list = document.querySelector('[data-cart-list]');
+        var empty = document.querySelector('[data-cart-empty]');
+        var foot = document.querySelector('[data-cart-foot]');
+        var subtotalEl = document.querySelector('[data-cart-subtotal]');
+        if (!list) return;
+        var linesArr = cart.lines();
+        if (linesArr.length === 0) {
+          list.hidden = true;
+          if (foot) foot.hidden = true;
+          if (empty) empty.hidden = false;
+          return;
+        }
+        if (empty) empty.hidden = true;
+        list.hidden = false;
+        if (foot) foot.hidden = false;
+        list.innerHTML = linesArr.map(function (line) {
+          var id = line.id;
+          var qty = line.qty;
+          var item = line.item;
+          var lineTotal = item.priceCents * qty;
+          var esc = function (s) {
+            return String(s).replace(/[&<">]/g, function (c) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]); });
+          };
+          return '<li class="cart-drawer__line">' +
+            '<img src="' + esc(item.img) + '" alt="" width="48" height="48" style="object-fit:cover;border-radius:6px;flex-shrink:0;">' +
+            '<div style="flex:1;min-width:0;">' +
+              '<div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(item.name) + '</div>' +
+              '<div style="color:var(--color-ink-soft);font-size:0.875rem;">' + money.formatPrice(item.priceCents) + '</div>' +
+            '</div>' +
+            '<div class="cart-drawer__qty">' +
+              '<button type="button" class="cart-drawer__qty-btn" data-cart-dec="' + esc(id) + '" aria-label="Decrease quantity of ' + esc(item.name) + '">−</button>' +
+              '<span>' + qty + '</span>' +
+              '<button type="button" class="cart-drawer__qty-btn" data-cart-inc="' + esc(id) + '" aria-label="Increase quantity of ' + esc(item.name) + '">+</button>' +
+            '</div>' +
+            '<div style="font-weight:600;min-width:60px;text-align:right;">' + money.formatPrice(lineTotal) + '</div>' +
+            '<button type="button" class="cart-drawer__remove" data-cart-remove="' + esc(id) + '" aria-label="Remove ' + esc(item.name) + '">×</button>' +
+          '</li>';
+        }).join('');
+        if (subtotalEl) subtotalEl.textContent = money.formatPrice(cart.subtotalCents());
+      }
+
+      function wireCartMutations() {
+        var listEl = document.querySelector('[data-cart-list]');
+        if (!listEl) return;
+        listEl.addEventListener('click', function (e) {
+          var decBtn = e.target.closest('[data-cart-dec]');
+          if (decBtn) { cart.dec(decBtn.getAttribute('data-cart-dec')); return; }
+          var incBtn = e.target.closest('[data-cart-inc]');
+          if (incBtn) { cart.inc(incBtn.getAttribute('data-cart-inc')); return; }
+          var rmBtn = e.target.closest('[data-cart-remove]');
+          if (rmBtn) { cart.remove(rmBtn.getAttribute('data-cart-remove')); return; }
+        });
+      }
+
+      function wireAddButtons() {
+        document.querySelectorAll('.menu-grid').forEach(function (grid) {
+          grid.addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-add]');
+            if (!btn) return;
+            e.preventDefault();
+            var id = btn.getAttribute('data-add');
+            if (catalog.has(id)) {
+              cart.addItem(id);
+            } else {
+              console.warn('app: unknown catalog id', id);
+            }
+          });
+        });
+      }
+
+      function wireStorageSync() {
+        storage.attachChangeListener(function () { cart.hydrate(); });
+      }
+
+      function init() {
+        storage.detect();
+        catalog.reindex();
+        cart.hydrate();
+        updateBadge();
+        wireAddButtons();
+        wireCartMutations();
+        wireStorageSync();
+      }
+
+      cart.subscribe(function () { updateBadge(); renderDrawer(); });
+
+      document.addEventListener('DOMContentLoaded', init);
+
+      window.__bpCart = { catalog: catalog, cart: cart, money: money, storage: storage };
+
+      /* === Slice 2 Manual Verification ===
+      PREREQUISITE: Slice 1 is verified and present.
+
+      1. Open DevTools console. Run: __bpCart.catalog.size() — expect 32.
+      2. Run: __bpCart.catalog.get('burgers:classic') — expect { priceCents: 895 }.
+      3. Click "Add" on The Classic card. Badge shows 1. Open drawer — line shows "The Classic", "$8.95", qty 1.
+      4. Click "Add" on The Classic again. Badge shows 2. Line qty is 2, line subtotal "$17.90".
+      5. Click + in drawer. Qty becomes 3, subtotal "$26.85".
+      6. Click − in drawer once. Qty becomes 2, subtotal "$17.90".
+      7. Click − again. Line disappears. Badge shows 0. Empty state shown.
+      8. Add "Cheese Fries" (qty 1, $5.50) and "Kids' Burger" (qty 1, $6.95). Drawer subtotal = $12.45.
+      9. Reload page. Badge shows 2. Cart content restored. Drawer subtotal still $12.45.
+      10. Open second tab to same URL. Add item in tab 1. Tab 2 badge updates automatically (cross-tab sync).
+      11. Press ESC with drawer open — closes. Focus returns to toggle.
+      12. Click backdrop — closes. Focus returns to toggle.
+      */
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+schema: spec-driven
+
+context: |
+  Project: jochos-epw (working name; subject to rename during proposal phase)
+  Stack: vanilla HTML + inline CSS + inline JavaScript — no build tooling, no package manager
+  Site root: burger-site-draft/ (contains index.html and menu.html)
+  Persistence: openspec (artifacts on disk) + engram (cross-session context)
+  No external CSS/JS files; CSS is inlined in <style> blocks, JS is inlined in <script> blocks
+  External assets only via CDN (Google Fonts, Unsplash images)
+  No git repository at project root (no .git/, no remote configured)
+  Strict TDD: disabled — no test runner present, no JS test infrastructure available
+  Style: BEM-style class naming visible in markup (e.g. topbar__logo, btn--primary, item__order)
+
+rules:
+  proposal:
+    - Include rollback plan for changes that touch inline markup
+    - Note absence of git so commit/PR steps are out of scope until repo is initialized
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Mark visual/UX requirements as SHOULD, structural/contractual ones as MUST
+  design:
+    - Document any decision that splits inline CSS into stylesheets as architecture-level
+    - Justify adding a build tool with concrete benefit before introducing tooling
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable without a build pipeline
+  apply:
+    tdd: false
+    test_command: ""
+    no_test_runner_warning: true
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 0
+    manual_verification:
+      - Open burger-site-draft/index.html in a browser
+      - Open burger-site-draft/menu.html in a browser
+      - Confirm all anchor targets still resolve
+  archive:
+    - Warn before merging deltas that change inline CSS/JS without externalization
