@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Burger Place</title>
+
+  <!--
+    ==========================================================================
+    Admin page — Slice 1 skeleton
+    Auth + orders land in slices 3 and 4.
+    ==========================================================================
+  -->
+
+  <!-- Google Fonts: Poppins + Inter (matching the project) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ---------- Design tokens (duplicated from menu.html :root) ---------- */
+    :root {
+      --color-primary: #b8312f;
+      --color-primary-dark: #8c2523;
+      --color-accent: #f4b942;
+      --color-bg: #ffffff;
+      --color-bg-soft: #f8f5f0;
+      --color-ink: #1a1a1a;
+      --color-ink-soft: #555;
+      --color-muted: #8a8a8a;
+      --color-line: #e6e1d8;
+
+      --font-display: 'Poppins', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 6px rgba(0,0,0,0.06);
+      --shadow-md: 0 10px 30px rgba(0,0,0,0.10);
+      --container: 1200px;
+      --section-pad-y: clamp(64px, 8vw, 120px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-ink);
+      background: var(--color-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- Admin shell (slice 1 placeholder) ---------- */
+    .admin-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-shell__brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+
+    /* ---------- Admin topbar ---------- */
+    .admin-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 64px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-line);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+    }
+    .admin-topbar__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .admin-topbar__brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+      color: var(--color-ink);
+    }
+
+    /* ---------- Realtime status pill (slice 1 presentational only) ---------- */
+    .admin-realtime-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      background: var(--color-bg-soft);
+      color: var(--color-ink-soft);
+    }
+    .admin-realtime-pill::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e; /* green — slice 4 will toggle this */
+    }
+
+    /* ---------- Main content ---------- */
+    .admin-main {
+      flex: 1;
+      padding: 24px;
+    }
+  </style>
+
+  <!-- 1. Credentials (gitignored; hand-filled from .env) -->
+  <script src="supabase-config.js"></script>
+
+  <!-- 2. Supabase JS SDK from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Admin shell (slice 1 placeholder). Auth + orders land in slices 3 and 4. -->
+  <header class="admin-topbar">
+    <div class="admin-topbar__inner">
+      <a class="admin-topbar__brand" href="menu.html">Burger.Place Admin</a>
+      <button type="button" class="admin-topbar__logout" data-admin-logout hidden
+              style="padding:8px 16px;border-radius:999px;font-weight:600;font-size:13px;
+                     background:var(--color-bg-soft);border:1.5px solid var(--color-line);cursor:pointer;">
+        Sign out
+      </button>
+    </div>
+  </header>
+
+  <main id="admin-root">
+    <!-- Slice 3 will populate this with login form, orders list, empty states -->
+    <div class="admin-main">
+      <p>Admin shell — orders dashboard loads in slices 3 and 4.</p>
+    </div>
+  </main>
+
+  <!-- 3. Initialize Supabase client (deferred to slices 3 and 4 for full auth + orders logic) -->
+  <script>
+    (function () {
+      'use strict';
+      // Slice 1: initialize the client globally so slices 3 and 4 can use it.
+      // Full auth session detection and order-fetching logic lands in slice 3.
+      if (typeof window.supabase !== 'undefined' && window.__bpSupabase) {
+        window.supabase = window.supabase.createClient(
+          window.__bpSupabase.url,
+          window.__bpSupabase.publishableKey,
+          {
+            auth: {
+              persistSession: true,
+              autoRefreshToken: true,
+              storage: window.localStorage,
+              detectSessionInUrl: true
+            }
+          }
+        );
+        console.info('[admin] Supabase client initialized. Auth + orders in slices 3–4.');
+      } else {
+        console.warn('[admin] supabase-config.js not loaded — check .env and supabase-config.js');
+      }
+    })();
+  </script>
+
+</body>
+</html>
