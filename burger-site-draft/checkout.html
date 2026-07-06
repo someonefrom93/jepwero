@@ -153,6 +153,20 @@
         try { sessionStorage.setItem(SUBMIT_TOKEN_KEY, fresh); } catch (ex) {}
         window.__bpIdempotencyToken = fresh;
       }
+
+      // After any order lands (fresh insert OR silent dedup redirect), invalidate the
+      // submit token so the NEXT submit generates a fresh UUID. Without this, every
+      // submit from the same tab would dedup-match the previous order's row and bounce
+      // the user back to that old order id — silently swallowing the new attempt.
+      function rotateSubmitToken() {
+        var fresh = (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function')
+          ? crypto.randomUUID()
+          : null;
+        if (!fresh) return;
+        try { sessionStorage.setItem(SUBMIT_TOKEN_KEY, fresh); } catch (ex) {}
+        window.__bpIdempotencyToken = fresh;
+      }
+
       try {
         ensureSubmitToken();
       } catch (tokenErr) {
@@ -342,6 +356,7 @@
       }
 
       function silentRedirectToExisting(id) {
+        rotateSubmitToken();
         try { sessionStorage.setItem(SUCCESS_KEY, id); } catch (ex) {}
         window.location.href = 'menu.html#order=' + id;
         // NOTE: do NOT clear cart or draft on duplicate (spec delta).
@@ -383,19 +398,20 @@
             silentRedirectToExisting(sel.data.id);
             return;
           }
-          return supabase.from('orders').insert(orderPayload).select().single()
+          // Atomic insert via SECURITY DEFINER RPC. Bypasses RLS round-trip
+          // (the previous .from('orders').insert().select().single() flow hit
+          // 42501 because PostgREST runs a follow-up SELECT to return the row,
+          // and admin_select_orders is authenticated-only). The RPC returns the
+          // new order_id directly. Order + items land in a single transaction.
+          return supabase.rpc('place_order', { p_order: orderPayload, p_items: itemsPayload })
             .then(function (res) {
               if (res.error) throw res.error;
-              var order = res.data;
-              var withOrderId = itemsPayload.map(function (i) { i.order_id = order.id; return i; });
-              return supabase.from('order_items').insert(withOrderId)
-                .then(function (ir) {
-                  if (ir.error) throw ir.error;
-                  try { localStorage.removeItem(CART_KEY); } catch (ex) {}
-                  try { localStorage.removeItem(DRAFT_KEY); } catch (ex) {}
-                  try { sessionStorage.setItem(SUCCESS_KEY, order.id); } catch (ex) {}
-                  window.location.href = 'menu.html#order=' + order.id;
-                });
+              var orderId = res.data;
+              rotateSubmitToken();
+              try { localStorage.removeItem(CART_KEY); } catch (ex) {}
+              try { localStorage.removeItem(DRAFT_KEY); } catch (ex) {}
+              try { sessionStorage.setItem(SUCCESS_KEY, orderId); } catch (ex) {}
+              window.location.href = 'menu.html#order=' + orderId;
             })
             .catch(function (err) {
               console.error('[checkout] submit failed:', err);
